@@ -11,6 +11,6 @@ export class TranslocoHttpLoader implements TranslocoLoader {
   private http = inject(HttpClient);
 
   getTranslation(lang: string): Observable<any> {
-    return this.http.get(`/i18n/${lang}.json`);
+    return this.http.get(`cinema/i18n/${lang}.json`);
   }
 }

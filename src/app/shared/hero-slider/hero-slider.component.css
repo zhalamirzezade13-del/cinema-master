@@ -74,7 +74,7 @@
 }
 
 .release-date { margin-bottom: 24px; font-weight: 600; }.release-date span { color: #f5c518; }
-.buttons { display: flex; flex-wrap: wrap; gap: 12px; }.buttons button, .buttons a { padding: 13px 22px; border-radius: 8px; color: #fff; font-weight: 700; cursor: pointer; border: 1px solid transparent; }.buttons a { text-decoration: none; }.book-btn { background: #e63946; }.watch-btn { background: rgba(10, 15, 20, .52); border-color: rgba(255,255,255,.4) !important; }
+.buttons { display: flex; flex-wrap: wrap; gap: 12px; }.buttons button { padding: 13px 22px; border-radius: 8px; color: #fff; font-weight: 700; cursor: pointer; border: 1px solid transparent; }.book-btn { background: #e63946; }.trailer-btn { background: rgba(10, 15, 20, .52); border-color: rgba(255,255,255,.4) !important; }
 
 @media (max-width: 640px) {
   .hero { min-height: 600px; align-items: end; padding-bottom: 46px; background-position: 60% center; }
