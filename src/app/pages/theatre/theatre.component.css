@@ -1,0 +1,37 @@
+.theatre-page {
+  min-height: calc(100vh - 88px);
+  padding: 56px clamp(20px, 6vw, 96px) 80px;
+  color: #f6f7fb;
+  background: radial-gradient(circle at top, #29313e 0, #14191f 42%, #0b0e12 100%);
+}
+
+.theatre-heading { display: flex; justify-content: space-between; gap: 28px; max-width: 1180px; margin: 0 auto 32px; }
+.eyebrow { color: #ff8a00; font-size: 12px; font-weight: 700; letter-spacing: 2px; }
+h1 { margin: 8px 0; font-size: clamp(32px, 5vw, 48px); }
+.subtitle { color: #aeb5c0; }
+.hall-picker { max-width: 1180px; margin: 0 auto 22px; }.hall-picker h2 { margin-top: 6px; font-size: 24px; }.hall-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 18px; }.hall-card { padding: 15px; color: #dce1e8; text-align: left; cursor: pointer; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; background: rgba(255,255,255,.04); transition: border-color .2s, background .2s; }.hall-card strong,.hall-card span,.hall-card small { display: block; }.hall-card span { margin: 5px 0; color: #ff9d20; font-size: 13px; }.hall-card small { color: #9ca6b3; }.hall-card:hover,.hall-card.active { border-color: #ff8a00; background: rgba(255,138,0,.12); }
+
+.selected-seat { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: min(1180px, 100%); margin: 0 auto 22px; padding: 16px 20px; border: 1px solid rgba(255,255,255,.14); border-radius: 14px; background: rgba(255,255,255,.06); }
+.selected-seat span, .selected-seat strong { display: block; }
+.selected-seat span { color: #aeb5c0; font-size: 13px; }
+.selected-seat strong { margin-top: 6px; font-size: 17px; }
+.selected-seat b { display: block; margin-top: 8px; color: #ff9d20; font-size: 22px; }
+.book-ticket { min-width: 160px; padding: 13px 20px; color: #16100a; font-size: 15px; font-weight: 800; cursor: pointer; border: 0; border-radius: 10px; background: #ff9d20; transition: transform .2s, background .2s; }.book-ticket:hover:not(:disabled) { transform: translateY(-2px); background: #ffb04a; }.book-ticket:disabled { cursor: not-allowed; opacity: .45; }
+
+.seat-map { max-width: 1180px; margin: auto; padding: 26px clamp(12px, 3vw, 42px) 42px; overflow-x: auto; border: 1px solid rgba(255,255,255,.1); border-radius: 22px; background: linear-gradient(145deg, rgba(255,255,255,.09), rgba(255,255,255,.025)); box-shadow: 0 24px 60px rgba(0,0,0,.28); }
+.map-title { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 18px; color: #cbd2db; }.map-title strong { color: #ff9d20; font-size: 14px; }
+.legend { display: flex; justify-content: center; gap: 25px; margin-bottom: 26px; color: #c6cbd3; font-size: 13px; }
+.legend span { display: flex; align-items: center; gap: 7px; }
+.legend i { width: 13px; height: 13px; border-radius: 4px; background: #718096; }
+.legend i.selected { background: #f03b84; }.legend i.occupied { background: #29313d; }
+
+.screen { width: 76%; min-width: 630px; margin: 0 auto 46px; padding: 12px; text-align: center; color: #7a8491; font-weight: 700; letter-spacing: 5px; border-radius: 50% 50% 8px 8px; background: linear-gradient(#eef2f4, #9ca6ad); box-shadow: 0 13px 28px rgba(227,238,245,.28); }
+.rows { min-width: 760px; display: grid; gap: 8px; }
+.seat-row { display: flex; align-items: center; justify-content: center; }
+.seat-block { display: grid; grid-template-columns: repeat(12, 25px); gap: 4px; }
+.aisle { width: 58px; }.row-number { width: 26px; margin-right: 9px; color: #8d96a1; font-size: 12px; text-align: right; }.row-number.right { margin: 0 0 0 9px; text-align: left; }
+.seat { width: 25px; height: 25px; padding: 0; color: #fff; font-size: 9px; cursor: pointer; border: 0; border-radius: 7px 7px 3px 3px; background: #667383; box-shadow: inset 0 -3px rgba(0,0,0,.22); transition: transform .18s, background .18s; }
+.seat:hover:not(:disabled) { background: #ff8a00; transform: translateY(-3px); }.seat.selected { background: #f03b84; box-shadow: 0 0 0 3px rgba(240,59,132,.25); }.seat.occupied { cursor: not-allowed; opacity: .38; background: #303944; }
+
+@media (max-width: 800px) { .hall-list { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .theatre-page { padding-top: 34px; }.theatre-heading { flex-direction: column; }.selected-seat { width: 100%; align-items: stretch; flex-direction: column; }.book-ticket { width: 100%; }.seat-map { margin-inline: -8px; border-radius: 14px; }.legend { justify-content: flex-start; gap: 14px; }.hall-list { grid-template-columns: 1fr; }.map-title { flex-direction: column; } }

@@ -1,0 +1,37 @@
+<section class="hero">
+    <div class="hero-content">
+
+        <span class="rating">
+            ⭐️ 9 IMDb
+        </span>
+
+        <h1>{{'hero.title' | transloco }}</h1>
+
+        <div class="movie-info">
+      <span>{{ 'hero.action' | transloco }}</span>
+      <span>{{ 'hero.adventure' | transloco }}</span>
+      <span>{{ 'hero.fantasy' | transloco }}</span>
+    </div>
+
+        <p>
+            
+            {{'hero.description' | transloco }}
+        </p>
+
+      <div class="release-date">
+      {{ 'hero.inCinemas' | transloco }}:
+      <span>{{ 'hero.releaseDate' | transloco }}</span>
+    </div>
+
+        <div class="buttons">
+            <button class="book-btn" [routerLink]="['/movies']">{{ 'hero.bookTickets' | transloco }}</button>
+            <a
+              class="watch-btn"
+              href="https://www.youtube.com/watch?v=kpm2k0S3UuY"
+              target="_blank"
+              rel="noopener noreferrer"
+            >{{ 'hero.watch' | transloco }}</a>
+        </div>
+
+    </div>
+</section>

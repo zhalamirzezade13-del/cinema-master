@@ -1,0 +1,18 @@
+<main class="movie-detail-page">
+  <a routerLink="/movies" class="back-link">← Back to movies</a>
+  <section class="movie-summary">
+    <img *ngIf="movie.poster" [src]="movie.poster" [alt]="movie.title" />
+    <div>
+      <p class="eyebrow">NOW SELECTING</p>
+      <h1>{{ movie.title }}</h1>
+      <p class="genre">{{ movie.genre }}</p>
+      <div class="facts"><span>★ {{ movie.rating }}</span><span>{{ movie.duration }}</span><span>2D · English</span></div>
+      <section class="about-film" aria-labelledby="about-film-title">
+        <p class="section-label" id="about-film-title">ABOUT THIS FILM</p>
+        <p class="description">{{ movie.description }}</p>
+      </section>
+      <p class="screening-note">This screening is available in Hall {{ hallId }}. Select an available seat below.</p>
+    </div>
+  </section>
+  <app-theatre [embedded]="true" [hallId]="hallId" [movieTitle]="movie.title"></app-theatre>
+</main>

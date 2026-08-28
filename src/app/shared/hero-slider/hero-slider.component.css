@@ -1,0 +1,83 @@
+.hero{
+    min-height: min(680px, calc(100vh - 88px));
+    display: flex;
+    align-items: center;
+    padding: 72px clamp(20px, 6vw, 96px);
+    background-color: #0d1117;
+    color: white;
+    background-image:
+    linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.85),
+      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0.25)
+    ),
+    url('/images/banners/avatar-fire-and-ash.jpeg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: white;
+
+}
+
+.hero-content{
+    max-width: 620px;
+}
+
+.hero-content h1{
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 20px 0;
+}
+
+.rating{
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: #f5c518;
+    color: #000;
+    font-weight: 600;
+}
+
+.movie-info{
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.movie-info span{
+    padding: 6px 14px;
+    border: 1px solid #555;
+    border-radius: 20px;
+    font-size: 14px;
+      
+}
+
+.hero-content p {
+  max-width: 560px;
+  margin: 20px 0 26px;
+
+  font-size: 16px;
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+
+  color: rgba(255, 255, 255, 0.9);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.release-date { margin-bottom: 24px; font-weight: 600; }.release-date span { color: #f5c518; }
+.buttons { display: flex; flex-wrap: wrap; gap: 12px; }.buttons button, .buttons a { padding: 13px 22px; border-radius: 8px; color: #fff; font-weight: 700; cursor: pointer; border: 1px solid transparent; }.buttons a { text-decoration: none; }.book-btn { background: #e63946; }.watch-btn { background: rgba(10, 15, 20, .52); border-color: rgba(255,255,255,.4) !important; }
+
+@media (max-width: 640px) {
+  .hero { min-height: 600px; align-items: end; padding-bottom: 46px; background-position: 60% center; }
+  .hero-content p { -webkit-line-clamp: 4; line-clamp: 4; font-size: 15px; }
+  .movie-info { flex-wrap: wrap; }
+}

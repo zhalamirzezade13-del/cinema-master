@@ -1,0 +1,43 @@
+<main class="cart-page">
+  <section class="cart-content">
+    <div class="cart-heading">
+      <p>{{'cart.yourBasket' | transloco }}</p>
+      <h1>{{'cart.yourTickets' | transloco }}</h1>
+    </div>
+
+    <ng-container *ngIf="cart.tickets().length; else emptyCart">
+      <div class="ticket-list">
+        <article class="ticket" *ngFor="let ticket of cart.tickets()">
+          <div>
+            <h2>{{ ticket.movie }}</h2>
+
+            <span>
+              {{ ticket.hall }} · 
+              {{'cart.row' | transloco }} {{ ticket.row }}, 
+              {{'cart.seat' | transloco }} {{ ticket.seat }}</span>
+          </div>
+          <strong>{{ ticket.price }} ₼</strong>
+          <button type="button" 
+          (click)="cart.remove(ticket.id)">{{'cart.remove' | transloco }}</button>
+        </article>
+      </div>
+      <footer class="cart-total"><span>{{'cart.total' | transloco }}</span><strong>{{ cart.total() }} ₼</strong></footer>
+    </ng-container>
+
+    <ng-template #emptyCart>
+      <div class="empty-cart"><h2>{{'cart.emptyTitle' | transloco }}</h2><span>{{'cart.emptyDescription' | transloco }}</span></div>
+    </ng-template>
+
+    <section class="favorite-films" *ngIf="favorites.movies().length">
+      <div class="section-heading">
+        <p>{{'cart.yourFavorites' | transloco }}</p>
+        <h2>{{'cart.favoriteFilms' | transloco }}</h2>
+      </div>
+      <div class="favorite-grid">
+        <app-movie-card *ngFor="let movie of favorites.movies()" [movie]="movie"></app-movie-card>
+      </div>
+    </section>
+
+    <a routerLink="/movies" class="browse-movies">{{'cart.browseMovies' | transloco }}  </a>
+  </section>
+</main>

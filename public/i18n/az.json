@@ -1,0 +1,85 @@
+{
+  "nav": {
+    "home": "Ana səhifə",
+    "movies": "Filmlər",
+    "theatre": "Kinoteatr",
+    "favorites": "Seçilmişlər",
+    "basket": "Səbət",
+    "login": "Giriş",
+    "logout": "Çıxış"
+  },
+  "moviesPage": {
+    "eyebrow": "KİNOTEATRLARDA",
+    "title": "Filmlər",
+    "description": "Ən yeni filmləri kəşf edin və növbəti kino təcrübənizi seçin."
+  },
+  "login": {
+    "welcome": "YENİDƏN XOŞ GƏLMİSİNİZ",
+    "title": "Cinema-ya daxil olun",
+    "description": "Səbətinizi görmək və bronlarınıza davam etmək üçün daxil olun.",
+    "email": "E-poçt",
+    "password": "Şifrə",
+    "button": "Daxil ol",
+    "error": "E-poçt və ya şifrə yanlışdır."
+  },
+  "home": {
+    "NowShowing": "İndi Göstərilir",
+    "ComingSoon": "Tezliklə",
+    "ViewAll": "Hamısına bax"
+  },
+  "movies": {
+    "inTheatres": "KİNOTEATRLARDA",
+    "title": "Filmlər",
+    "description": "Ən son filmləri kəşf edin və növbəti kino təcrübənizi seçin."
+  },
+   "cart": {
+  "yourBasket": "SƏBƏTİNİZ",
+  "yourTickets": "Biletləriniz",
+  "row": "Sıra",
+  "seat": "Oturacaq",
+  "remove": "Sil",
+  "total": "Ümumi",
+  "emptyTitle": "Səbətiniz boşdur",
+  "emptyDescription": "Bilet əlavə etmək üçün film və oturacaq seçin.",
+  "yourFavorites": "FAVORİLƏRİNİZ",
+  "favoriteFilms": "Sevimli filmlər",
+  "browseMovies": "Filmlərə bax"
+},
+"favorites": {
+  "myList": "MƏNİM SİYAHIM",
+  "title": "Favorilər",
+  "subtitle": "İzləmək istədiyiniz filmləri bir yerdə saxlayın.",
+  "emptyTitle": "Hələ favorit film yoxdur",
+  "emptyDescription": "Filmi siyahınıza əlavə etmək üçün ürək işarəsinə toxunun.",
+  "exploreMovies": "Filmlərə bax"
+},
+"theatre": {
+  "seatSelection": "OTURACAQ SEÇİMİ",
+  "cinemaHall": "Kino zalı",
+  "selectAvailableSeat": "Qiyməti görmək üçün boş oturacaq seçin.",
+  "selectedSeat": "Seçilmiş oturacaq",
+  "row": "Sıra",
+  "seat": "Oturacaq",
+  "chooseSeat": "Oturacaq seçin",
+  "bookTicket": "Bilet al",
+  "chooseHall": "ZAL SEÇİN",
+  "ourHalls": "Kino zallarımız",
+  "seatMap": "Kino zalının oturacaq xəritəsi",
+  "available": "Boş",
+  "selected": "Seçilmiş",
+  "occupied": "Dolu",
+  "screen": "EKRAN",
+  "manat": "manat"
+},
+"hero": {
+  "title": "Avatar: Od və Kül",
+  "action": "Döyüş",
+  "adventure": "Macəra",
+  "fantasy": "Fantastika",
+  "description": "Jake və Neytirinin ailəsi itki və kədərlə mübarizə apararkən Ash People adlı yeni və aqressiv Na'vi qəbiləsi ilə qarşılaşır. Bu qəbiləyə alovlu xarakterə malik Varang rəhbərlik edir. Pandorada münaqişə daha da şiddətlənir və yeni mənəvi qarşıdurmalar ortaya çıxır. RDA daha güclü hərbi qüvvə ilə Pandoraya qayıdır və polkovnik Miles Quaritch Jake Sully-ni ovlamaq üçün xüsusi bir dəstəyə rəhbərlik edir. Ailəsi yaşadığı itkinin ağrısı ilə mübarizə apararkən Jake yaxınlaşan böyük təhlükəni hiss edir. Quaritch hələ də sağdır və intiqam almaq niyyətindədir. Eyni zamanda Eywadan üz döndərmiş təhlükəli Na'vi döyüşçüləri ortaya çıxır. Onların lideri Varang güc uğrunda mübarizə apararkən Pandoranın taleyi od və kül yolunda sınağa çəkilir.",
+  "inCinemas": "Kinoteatrlarda",
+  "releaseDate": "20 dekabr 2026",
+  "bookTickets": "Bilet al",
+  "watch": "Treylerə bax"
+}
+}

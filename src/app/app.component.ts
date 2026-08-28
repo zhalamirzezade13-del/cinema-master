@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  imports: [RouterOutlet, NavbarComponent],
 })
 export class AppComponent {
-  title = 'cinema-master';
 }

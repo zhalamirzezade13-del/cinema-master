@@ -1,0 +1,186 @@
+<main class="theatre-page">
+  <div class="theatre-heading" *ngIf="!embedded">
+    <div>
+      <p class="eyebrow">{{'theatre.seatSelection' | transloco }}</p>
+      <h1>{{'theatre.cinemaHall' | transloco }}</h1>
+      <p class="subtitle">{{'theatre.selectAvailableSeat' | transloco }}</p>
+    </div>
+  </div>
+
+  <aside class="selected-seat" aria-live="polite">
+    <div>
+      <span>{{'theatre.selectedSeat' | transloco }}</span>
+
+      <strong *ngIf="selectedSeat; else noSeat">
+        {{ 'theatre.row' | transloco }}
+        {{ selectedSeat.row }},
+        {{ 'theatre.seat' | transloco }}
+        {{ selectedSeat.number }}
+      </strong>
+
+
+      <ng-template #noSeat>
+        <strong>{{'theatre.chooseSeat' | transloco }}</strong>
+      </ng-template>
+
+      <b *ngIf="selectedSeat">
+        {{ selectedSeat.price }} ₼
+      </b>
+    </div>
+
+    <button
+      type="button"
+      class="book-ticket"
+      [disabled]="!selectedSeat"
+      (click)="bookTicket()"
+    >
+      {{'theatre.bookTicket' | transloco }}
+    </button>
+  </aside>
+
+  <div class="hall-picker" *ngIf="!embedded">
+    <div>
+      <p class="eyebrow">{{'theatre.chooseHall' | transloco }}</p>
+      <h2>{{'theatre.ourHalls' | transloco }}</h2>
+    </div>
+
+    <div class="hall-list">
+      <button
+        *ngFor="let hall of halls"
+        type="button"
+        class="hall-card"
+        [class.active]="activeHall.id === hall.id"
+        (click)="selectHall(hall)"
+      >
+        <strong>{{ hall.name }}</strong>
+        <span>{{ hall.type }}</span>
+        <small>{{ hall.detail }}</small>
+      </button>
+    </div>
+  </div>
+
+  <section class="seat-map" aria-label="Cinema seat map">
+
+    <div class="map-title">
+      <span>{{ activeHall.name }} · {{ activeHall.type }}</span>
+      <strong>{{ activeHall.detail }}</strong>
+    </div>
+
+    <div class="legend">
+      <span>
+        <i class="available"></i>
+        {{'theatre.available' | transloco }}
+      </span>
+
+      <span>
+        <i class="selected"></i>
+        {{'theatre.selected' | transloco }}   
+      </span>
+
+      <span>
+        <i class="occupied"></i>
+        {{'theatre.occupied' | transloco }}
+      </span>
+    </div>
+
+    <div class="screen">SCREEN</div>
+
+    <div class="rows">
+
+      <div
+        class="seat-row"
+        *ngFor="let row of rows"
+      >
+
+        <span class="row-number">
+          {{ row }}
+        </span>
+
+        <!-- LEFT SEATS -->
+        <div class="seat-block">
+
+          <button
+            *ngFor="let number of leftSeats"
+            type="button"
+            class="seat"
+
+            [class.occupied]="
+              getSeat(row, number).status === 'occupied'
+            "
+
+            [class.selected]="
+              selectedSeat?.row === row &&
+              selectedSeat?.number === number
+            "
+
+            [attr.aria-label]="
+              'Row ' +
+              row +
+              ', seat ' +
+              number +
+              ', ' +
+              getSeat(row, number).price +
+              ' manat'
+            "
+
+            [disabled]="
+              getSeat(row, number).status === 'occupied'
+            "
+
+            (click)="selectSeat(getSeat(row, number))"
+          >
+            {{ number }}
+          </button>
+
+        </div>
+
+        <div class="aisle"></div>
+
+        <!-- RIGHT SEATS -->
+        <div class="seat-block">
+
+          <button
+            *ngFor="let number of rightSeats"
+            type="button"
+            class="seat"
+
+            [class.occupied]="
+              getSeat(row, number).status === 'occupied'
+            "
+
+            [class.selected]="
+              selectedSeat?.row === row &&
+              selectedSeat?.number === number
+            "
+
+            [attr.aria-label]="
+              'Row ' +
+              row +
+              ', seat ' +
+              number +
+              ', ' +
+              getSeat(row, number).price +
+              ' manat'
+            "
+
+            [disabled]="
+              getSeat(row, number).status === 'occupied'
+            "
+
+            (click)="selectSeat(getSeat(row, number))"
+          >
+            {{ number }}
+          </button>
+
+        </div>
+
+        <span class="row-number right">
+          {{ row }}
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+</main>

@@ -1,0 +1,31 @@
+<main class="payment-page">
+  <a routerLink="/movies" class="back-link">← Continue browsing movies</a>
+
+  <section class="payment-layout">
+    <div class="payment-intro">
+      <p class="eyebrow">CHECKOUT</p>
+      <h1>Complete your booking</h1>
+      <p>Review your ticket details and enter your payment information.</p>
+
+      <form class="payment-form" (submit)="$event.preventDefault()">
+        <label>Cardholder name<input type="text" placeholder="Name on card" autocomplete="cc-name"></label>
+        <label>Card number<input type="text" inputmode="numeric" placeholder="1234 5678 9012 3456" autocomplete="cc-number"></label>
+        <div class="card-details">
+          <label>Expiry date<input type="text" inputmode="numeric" placeholder="MM / YY" autocomplete="cc-exp"></label>
+          <label>CVV<input type="text" inputmode="numeric" placeholder="123" autocomplete="cc-csc"></label>
+        </div>
+        <button type="submit">Pay {{ booking.price }} ₼</button>
+      </form>
+    </div>
+
+    <aside class="booking-summary">
+      <p class="summary-label">YOUR TICKET</p>
+      <h2>{{ booking.movie }}</h2>
+      <dl>
+        <div><dt>Hall</dt><dd>{{ booking.hall }}</dd></div>
+        <div><dt>Seat</dt><dd>Row {{ booking.row }}, Seat {{ booking.seat }}</dd></div>
+        <div class="total"><dt>Total</dt><dd>{{ booking.price }} ₼</dd></div>
+      </dl>
+    </aside>
+  </section>
+</main>

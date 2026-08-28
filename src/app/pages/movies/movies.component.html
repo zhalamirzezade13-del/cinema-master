@@ -1,0 +1,11 @@
+<section class="movies-page">
+  <div class="page-heading">
+    <p class="eyebrow">{{'movies.inTheatres' | transloco }}</p>
+    <h1>{{'movies.title' | transloco }}</h1>
+    <p>{{'movies.description' | transloco }}</p>
+  </div>
+
+  <div class="movie-grid">
+    <app-movie-card *ngFor="let movie of movies" [movie]="movie"></app-movie-card>
+  </div>
+</section>

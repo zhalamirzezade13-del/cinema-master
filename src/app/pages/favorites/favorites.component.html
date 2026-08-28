@@ -1,0 +1,19 @@
+<main class="favorites-page">
+  <section class="favorites-content">
+    <p class="eyebrow">{{'favorites.myList' | transloco }}</p>
+    <h1>{{'favorites.title' | transloco }}</h1>
+    <p class="subtitle">{{'favorites.subtitle' | transloco }}</p>
+
+    <div class="favorites-grid" *ngIf="favorites.movies().length; else emptyFavorites">
+      <app-movie-card *ngFor="let movie of favorites.movies()" [movie]="movie"></app-movie-card>
+    </div>
+
+    <ng-template #emptyFavorites>
+      <div class="empty-favorites">
+        <h2>{{'favorites.emptyTitle' | transloco }}</h2>
+        <p>{{'favorites.emptyDescription' | transloco }}</p>
+        <a routerLink="/movies">{{'favorites.exploreMovies' | transloco }}</a>
+      </div>
+    </ng-template>
+  </section>
+</main>

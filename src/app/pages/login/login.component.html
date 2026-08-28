@@ -1,0 +1,13 @@
+<main class="login-page">
+  <section class="login-card">
+    <p class="eyebrow">{{'login.welcome' | transloco }}</p>
+    <h1>{{'login.title' | transloco }}</h1>
+    <p>{{'login.description' | transloco }}</p>
+    <form (submit)="$event.preventDefault(); login()">
+      <label>Email<input type="email" [(ngModel)]="email" name="email" placeholder="admin@gmail.com" autocomplete="email" required></label>
+      <label>Password<input type="password" [(ngModel)]="password" name="password" placeholder="1234" autocomplete="current-password" required></label>
+      <p *ngIf="loginError" class="login-error" role="alert">{{'login.error' | transloco }}</p>
+      <button type="submit">{{'login.button' | transloco }}</button>
+    </form>
+  </section>
+</main>

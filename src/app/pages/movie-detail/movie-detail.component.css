@@ -1,0 +1,8 @@
+.movie-detail-page { min-height: 100vh; padding: 44px clamp(20px, 6vw, 96px) 80px; color: #fff; background: #090b0f; }
+.back-link { color: #ff9d20; text-decoration: none; font-weight: 600; }
+.movie-summary { display: grid; grid-template-columns: 220px 1fr; gap: 30px; max-width: 1180px; margin: 32px auto 42px; align-items: center; }
+.movie-summary img { width: 220px; height: 315px; object-fit: cover; border-radius: 16px; box-shadow: 0 18px 42px rgba(0,0,0,.42); }
+.eyebrow { color: #ff8a00; font-size: 12px; font-weight: 700; letter-spacing: 2px; }.movie-summary h1 { margin: 9px 0 13px; font-size: clamp(32px, 5vw, 50px); }.genre,.description,.screening-note { color: #abb4c0; }
+.facts { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }.facts span { padding: 8px 12px; border-radius: 20px; background: #1c2430; }.facts span:first-child { color: #ffbd31; }.about-film { max-width: 650px; padding: 18px 20px; border-left: 3px solid #ff8a00; border-radius: 0 10px 10px 0; background: rgba(255, 138, 0, .08); }.section-label { margin: 0 0 8px; color: #ffb45b; font-size: 11px; font-weight: 700; letter-spacing: 1.6px; }.description { margin: 0; line-height: 1.65; }.screening-note { margin: 16px 0 0; font-size: 14px; }
+.movie-detail-page app-theatre { display: block; }.movie-detail-page ::ng-deep .theatre-page { min-height: auto; padding: 0; background: transparent; }
+@media (max-width: 600px) { .movie-summary { grid-template-columns: 1fr; }.movie-summary img { width: 160px; height: 230px; } }

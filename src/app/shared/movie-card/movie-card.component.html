@@ -1,0 +1,16 @@
+<article class="movie-card" *ngIf="movie">
+  <button type="button" class="favorite-button" [class.active]="favorites.isFavorite(movie)" (click)="toggleFavorite($event)" [attr.aria-label]="favorites.isFavorite(movie) ? 'Remove ' + movie.title + ' from favorites' : 'Add ' + movie.title + ' to favorites'">
+    {{ favorites.isFavorite(movie) ? '♥' : '♡' }}
+  </button>
+  <a class="movie-link" [routerLink]="['/movie']" [queryParams]="{ title: movie.title, poster: movie.poster, rating: movie.rating, genre: movie.genre, duration: movie.duration, description: movie.description }" [attr.aria-label]="'View details for ' + movie.title">
+    <img [src]="movie.poster" [alt]="movie.title" class="movie-poster" />
+    <div class="movie-content">
+      <div class="movie-top">
+        <h3>{{ movie.title }}</h3>
+        <span class="movie-rating">★ {{ movie.rating }}</span>
+      </div>
+      <p class="movie-genre">{{ movie.genre }}</p>
+      <span class="movie-duration">{{ movie.duration }}</span>
+    </div>
+  </a>
+</article>

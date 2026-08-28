@@ -1,0 +1,81 @@
+{
+  "nav": {
+    "home": "Home",
+    "movies": "Movies",
+    "theatre": "Theatre",
+    "favorites": "Favorites",
+    "basket": "Basket",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "moviesPage": {
+    "eyebrow": "IN THEATRES",
+    "title": "Movies",
+    "description": "Discover the latest films and choose your next cinema experience."
+  },
+
+  "login": {
+    "welcome": "WELCOME BACK",
+    "title": "Sign in to Cinema",
+    "description": "Sign in to view your basket and continue with your bookings.",
+    "email": "Email",
+    "password": "Password",
+    "button": "Login",
+    "error": "Email or password is incorrect."
+  },
+  "movies": {
+    "inTheatres": "IN THEATRES",
+    "title": "Movies",
+    "description": "Discover the latest films and choose your next cinema experience."
+  },
+  "cart": {
+  "yourBasket": "YOUR BASKET",
+  "yourTickets": "Your tickets",
+  "row": "Row",
+  "seat": "Seat",
+  "remove": "Remove",
+  "total": "Total",
+  "emptyTitle": "Your basket is empty",
+  "emptyDescription": "Choose a film and seat to add a ticket.",
+  "yourFavorites": "YOUR FAVORITES",
+  "favoriteFilms": "Favorite films",
+  "browseMovies": "Browse movies"
+},
+"favorites": {
+  "myList": "MY LIST",
+  "title": "Favorites",
+  "subtitle": "Keep the films you want to watch in one place.",
+  "emptyTitle": "No favorite films yet",
+  "emptyDescription": "Tap the heart on any film to add it to your list.",
+  "exploreMovies": "Explore movies"
+},
+"theatre": {
+  "seatSelection": "SEAT SELECTION",
+  "cinemaHall": "Cinema Hall",
+  "selectAvailableSeat": "Select an available seat to see its price.",
+  "selectedSeat": "Selected seat",
+  "row": "Row",
+  "seat": "Seat",
+  "chooseSeat": "Choose a seat",
+  "bookTicket": "Book a ticket",
+  "chooseHall": "CHOOSE A HALL",
+  "ourHalls": "Our cinema halls",
+  "seatMap": "Cinema seat map",
+  "available": "Available",
+  "selected": "Selected",
+  "occupied": "Occupied",
+  "screen": "SCREEN",
+  "manat": "manat"
+},
+"hero": {
+  "title": "Avatar: Fire and Ash",
+  "action": "Action",
+  "adventure": "Adventure",
+  "fantasy": "Fantasy",
+  "description": "Jake and Neytiri's family grapples with grief, encountering a new, aggressive Na'vi tribe, the Ash People, who are led by the fiery Varang, as the conflict on Pandora escalates and a new moral focus emerges. The RDA returns to Pandora with a more aggressive military force, while Colonel Miles Quaritch leads a specialized task force dedicated to hunting down Jake Sully. As the family struggles with loss, Jake senses that mortal danger is approaching. Quaritch is still alive and bent on revenge, while a brutal new group of Na'vi marauders who have turned their backs on Eywa emerges. Led by Varang, Pandora's fate is tested on the path of fire and ash.",
+  "inCinemas": "In Cinemas",
+  "releaseDate": "December 20, 2026",
+  "bookTickets": "Book Tickets",
+  "watch": "Watch "
+}
+}
