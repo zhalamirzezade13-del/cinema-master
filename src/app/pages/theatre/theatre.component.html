@@ -11,11 +11,11 @@
     <div>
       <span>{{'theatre.selectedSeat' | transloco }}</span>
 
-      <strong *ngIf="selectedSeat; else noSeat">
-        {{ 'theatre.row' | transloco }}
-        {{ selectedSeat.row }},
-        {{ 'theatre.seat' | transloco }}
-        {{ selectedSeat.number }}
+      <strong *ngIf="selectedSeats.length; else noSeat" class="selected-seat-list">
+        <span *ngFor="let selectedSeat of selectedSeats; let last = last">
+          {{ 'theatre.row' | transloco }} {{ selectedSeat.row }},
+          {{ 'theatre.seat' | transloco }} {{ selectedSeat.number }}<ng-container *ngIf="!last"> · </ng-container>
+        </span>
       </strong>
 
 
@@ -23,15 +23,15 @@
         <strong>{{'theatre.chooseSeat' | transloco }}</strong>
       </ng-template>
 
-      <b *ngIf="selectedSeat">
-        {{ selectedSeat.price }} ₼
+      <b *ngIf="selectedSeats.length">
+        {{ 'theatre.total' | transloco }}: {{ totalPrice }} ₼
       </b>
     </div>
 
     <button
       type="button"
       class="book-ticket"
-      [disabled]="!selectedSeat"
+      [disabled]="!selectedSeats.length"
       (click)="bookTicket()"
     >
       {{'theatre.bookTicket' | transloco }}
@@ -109,8 +109,7 @@
             "
 
             [class.selected]="
-              selectedSeat?.row === row &&
-              selectedSeat?.number === number
+              isSelected(row, number)
             "
 
             [attr.aria-label]="
@@ -149,8 +148,7 @@
             "
 
             [class.selected]="
-              selectedSeat?.row === row &&
-              selectedSeat?.number === number
+              isSelected(row, number)
             "
 
             [attr.aria-label]="

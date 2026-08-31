@@ -28,8 +28,8 @@ export class TheatreComponent {
   }
   readonly rows = Array.from({ length: 12 }, (_, index) => 12 - index);
   readonly leftSeats = Array.from({ length: 12 }, (_, index) => 12 - index);
-  readonly rightSeats = Array.from({ length: 12 }, (_, index) => index + 1);
-  selectedSeat?: Seat;
+  readonly rightSeats = Array.from({ length: 12 }, (_, index) => index + 13);
+  selectedSeats: Seat[] = [];
   halls = [
     { id: 1, name: 'Hall 1', type: 'Premium', detail: 'Dolby Atmos · 288 seats' },
     { id: 2, name: 'Hall 2', type: 'Standard', detail: 'Digital 2D · 240 seats' },
@@ -56,26 +56,45 @@ export class TheatreComponent {
   }
 
   selectSeat(seat: Seat): void {
-    if (seat.status === 'available') {
-      this.selectedSeat = seat;
+    if (seat.status !== 'available') return;
+
+    const index = this.selectedSeats.findIndex(
+      selected => selected.row === seat.row && selected.number === seat.number
+    );
+
+    if (index >= 0) {
+      this.selectedSeats = this.selectedSeats.filter((_, seatIndex) => seatIndex !== index);
+      return;
     }
+
+    this.selectedSeats = [...this.selectedSeats, seat];
+  }
+
+  isSelected(row: number, number: number): boolean {
+    return this.selectedSeats.some(seat => seat.row === row && seat.number === number);
+  }
+
+  get totalPrice(): number {
+    return this.selectedSeats.reduce((total, seat) => total + seat.price, 0);
   }
 
   selectHall(hall: typeof this.halls[number]): void {
     this.activeHall = hall;
-    this.selectedSeat = undefined;
+    this.selectedSeats = [];
   }
 
   bookTicket(): void {
-    if (!this.selectedSeat) return;
+    if (!this.selectedSeats.length) return;
 
     if (this.auth.isLoggedIn()) {
-      this.cart.add({
-        movie: this.movieTitle || 'Cinema screening',
-        hall: this.activeHall.name,
-        row: this.selectedSeat.row,
-        seat: this.selectedSeat.number,
-        price: this.selectedSeat.price
+      this.selectedSeats.forEach(selectedSeat => {
+        this.cart.add({
+          movie: this.movieTitle || 'Cinema screening',
+          hall: this.activeHall.name,
+          row: selectedSeat.row,
+          seat: selectedSeat.number,
+          price: selectedSeat.price
+        });
       });
     }
 
@@ -83,9 +102,9 @@ export class TheatreComponent {
       queryParams: {
         movie: this.movieTitle || 'Cinema screening',
         hall: this.activeHall.name,
-        row: this.selectedSeat.row,
-        seat: this.selectedSeat.number,
-        price: this.selectedSeat.price
+        row: this.selectedSeats.map(seat => seat.row).join(', '),
+        seat: this.selectedSeats.map(seat => seat.number).join(', '),
+        price: this.totalPrice
       }
     });
   }
