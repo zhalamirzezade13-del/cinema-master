@@ -33,6 +33,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/cinema-master/",
               "budgets": [
                 {
                   "type": "initial",
