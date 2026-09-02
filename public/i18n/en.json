@@ -23,6 +23,12 @@
     "button": "Login",
     "error": "Email or password is incorrect."
   },
+
+  "home": {
+  "NowShowing": "Now Showing",
+  "ComingSoon": "Coming Soon",
+  "ViewAll": "View All"
+},
   "movies": {
     "inTheatres": "IN THEATRES",
     "title": "Movies",
