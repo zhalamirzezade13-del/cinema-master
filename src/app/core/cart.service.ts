@@ -15,8 +15,19 @@ export class CartService {
   readonly tickets = signal<CartTicket[]>(this.readTickets());
   readonly total = computed(() => this.tickets().reduce((sum, ticket) => sum + ticket.price, 0));
 
-  add(ticket: Omit<CartTicket, 'id'>): void {
+  has(ticket: Omit<CartTicket, 'id'>): boolean {
+    return this.tickets().some(item =>
+      item.movie === ticket.movie &&
+      item.hall === ticket.hall &&
+      item.row === ticket.row &&
+      item.seat === ticket.seat
+    );
+  }
+
+  add(ticket: Omit<CartTicket, 'id'>): boolean {
+    if (this.has(ticket)) return false;
     this.update([...this.tickets(), { ...ticket, id: crypto.randomUUID() }]);
+    return true;
   }
 
   remove(id: string): void {

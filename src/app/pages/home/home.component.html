@@ -1,22 +1,57 @@
-<app-hero-slider>
-</app-hero-slider>
+<app-hero-slider></app-hero-slider>
 
 <section class="movies-section">
-    <div class="section-header">
-        <h2>{{'home.NowShowing' | transloco}}</h2>
-        <a routerLink="/movies">{{'home.ViewAll' | transloco}}</a>
-    </div>
-    <div class="movie-grid">
-        <app-movie-card *ngFor="let movie of nowShowing" [movie]="movie"></app-movie-card>
-    </div>
+  <div class="section-header">
+    <h2>
+      {{ 'home.NowShowing' | transloco }}
+    </h2>
+
+    <a routerLink="/movies">
+      {{ 'home.ViewAll' | transloco }}
+    </a>
+  </div>
+
+  <p *ngIf="loadingNowShowing">
+    Filmlər yüklənir...
+  </p>
+
+  <div
+    class="movie-grid"
+    *ngIf="!loadingNowShowing"
+  >
+    <app-movie-card
+      *ngFor="let movie of nowShowing"
+      [movie]="movie">
+    </app-movie-card>
+  </div>
 </section>
 
 <section class="movies-section">
-    <div class="section-header">
-        <h2>{{'home.ComingSoon' | transloco}}</h2>
-        <a routerLink="/movies">{{'home.ViewAll' | transloco}}</a>
-    </div>
-    <div class="movie-grid">
-        <app-movie-card *ngFor="let movie of comingSoon" [movie]="movie"></app-movie-card>
-    </div>
+  <div class="section-header">
+    <h2>
+      {{ 'home.ComingSoon' | transloco }}
+    </h2>
+
+    <a routerLink="/movies">
+      {{ 'home.ViewAll' | transloco }}
+    </a>
+  </div>
+
+  <p *ngIf="loadingComingSoon">
+    Filmlər yüklənir...
+  </p>
+
+  <div
+    class="movie-grid"
+    *ngIf="!loadingComingSoon"
+  >
+    <app-movie-card
+      *ngFor="let movie of comingSoon"
+      [movie]="movie">
+    </app-movie-card>
+  </div>
+
+  <p *ngIf="errorMessage">
+    {{ errorMessage }}
+  </p>
 </section>

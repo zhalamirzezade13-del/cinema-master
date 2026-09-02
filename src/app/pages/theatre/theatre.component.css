@@ -13,6 +13,7 @@ h1 { margin: 8px 0; font-size: clamp(32px, 5vw, 48px); }
 
 .selected-seat { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: min(1180px, 100%); margin: 0 auto 22px; padding: 16px 20px; border: 1px solid rgba(255,255,255,.14); border-radius: 14px; background: rgba(255,255,255,.06); }
 .selected-seat-list { display: flex; flex-wrap: wrap; gap: 4px; margin: 5px 0; }
+.booking-error { margin: 7px 0 0; color: #ff8c9a; font-size: 14px; }
 .selected-seat span, .selected-seat strong { display: block; }
 .selected-seat span { color: #aeb5c0; font-size: 13px; }
 .selected-seat strong { margin-top: 6px; font-size: 17px; }

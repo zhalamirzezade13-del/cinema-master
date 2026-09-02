@@ -14,6 +14,7 @@ import { CartService } from '../../core/cart.service';
 export class NavbarComponent {
   language: 'AZE' | 'ENG' = 'AZE';
   languageMenuOpen = false;
+  mobileMenuOpen = false;
 
   constructor(public readonly auth: AuthService, 
     public readonly cart: CartService, 
@@ -33,6 +34,16 @@ export class NavbarComponent {
     this.languageMenuOpen = !this.languageMenuOpen;
   }
 
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+    if (!this.mobileMenuOpen) this.languageMenuOpen = false;
+  }
+
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+    this.languageMenuOpen = false;
+  }
+
   setLanguage(language: 'AZE' | 'ENG'): void {
   this.language = language;
   this.languageMenuOpen = false;
@@ -42,5 +53,6 @@ export class NavbarComponent {
   localStorage.setItem('language', langCode);
   this.transloco.setActiveLang(langCode);
   document.documentElement.lang = langCode;
+  this.closeMobileMenu();
 }
 }

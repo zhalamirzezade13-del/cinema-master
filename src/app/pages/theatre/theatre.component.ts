@@ -30,6 +30,7 @@ export class TheatreComponent {
   readonly leftSeats = Array.from({ length: 12 }, (_, index) => 12 - index);
   readonly rightSeats = Array.from({ length: 12 }, (_, index) => index + 13);
   selectedSeats: Seat[] = [];
+  bookingError = '';
   halls = [
     { id: 1, name: 'Hall 1', type: 'Premium', detail: 'Dolby Atmos · 288 seats' },
     { id: 2, name: 'Hall 2', type: 'Standard', detail: 'Digital 2D · 240 seats' },
@@ -57,6 +58,7 @@ export class TheatreComponent {
 
   selectSeat(seat: Seat): void {
     if (seat.status !== 'available') return;
+    this.bookingError = '';
 
     const index = this.selectedSeats.findIndex(
       selected => selected.row === seat.row && selected.number === seat.number
@@ -81,12 +83,26 @@ export class TheatreComponent {
   selectHall(hall: typeof this.halls[number]): void {
     this.activeHall = hall;
     this.selectedSeats = [];
+    this.bookingError = '';
   }
 
   bookTicket(): void {
     if (!this.selectedSeats.length) return;
 
     if (this.auth.isLoggedIn()) {
+      const hasDuplicate = this.selectedSeats.some(selectedSeat => this.cart.has({
+        movie: this.movieTitle || 'Cinema screening',
+        hall: this.activeHall.name,
+        row: selectedSeat.row,
+        seat: selectedSeat.number,
+        price: selectedSeat.price
+      }));
+
+      if (hasDuplicate) {
+        this.bookingError = 'theatre.duplicateTicket';
+        return;
+      }
+
       this.selectedSeats.forEach(selectedSeat => {
         this.cart.add({
           movie: this.movieTitle || 'Cinema screening',

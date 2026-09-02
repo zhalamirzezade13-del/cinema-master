@@ -26,6 +26,9 @@
       <b *ngIf="selectedSeats.length">
         {{ 'theatre.total' | transloco }}: {{ totalPrice }} ₼
       </b>
+      <p *ngIf="bookingError" class="booking-error" role="alert">
+        {{ bookingError | transloco }}
+      </p>
     </div>
 
     <button

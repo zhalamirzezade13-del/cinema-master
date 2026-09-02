@@ -59,6 +59,7 @@
   "selectAvailableSeat": "Qiyməti görmək üçün boş oturacaq seçin.",
   "selectedSeat": "Seçilmiş oturacaqlar",
   "total": "Ümumi qiymət",
+  "duplicateTicket": "Bu oturacaqlardan biri artıq səbətinizdədir.",
   "row": "Sıra",
   "seat": "Oturacaq",
   "chooseSeat": "Oturacaq seçin",

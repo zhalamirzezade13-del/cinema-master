@@ -8,11 +8,24 @@
     <span class="brand-name">Cinema</span>
   </a>
 
+  <button
+    class="menu-toggle"
+    type="button"
+    (click)="toggleMobileMenu()"
+    [attr.aria-expanded]="mobileMenuOpen"
+    aria-controls="main-navigation"
+    aria-label="Menyunu aç və ya bağla"
+  >
+    <span></span><span></span><span></span>
+  </button>
+
+  <div id="main-navigation" class="nav-panel" [class.open]="mobileMenuOpen">
   <nav class="nav-links">
     <a
       routerLink="/"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
+      (click)="closeMobileMenu()"
     >
       {{'nav.home' | transloco }}
     </a>
@@ -20,6 +33,7 @@
     <a
       routerLink="/movies"
       routerLinkActive="active"
+      (click)="closeMobileMenu()"
     >
       {{'nav.movies' | transloco }}
     </a>
@@ -27,17 +41,18 @@
     <a
       routerLink="/theatre"
       routerLinkActive="active"
+      (click)="closeMobileMenu()"
     >
       {{'nav.theatre' | transloco }}
     </a>
   </nav>
 
   <div class="navbar-actions">
-    <a *ngIf="auth.isLoggedIn()" class="favorites-link" routerLink="/favorites" routerLinkActive="active">
+    <a *ngIf="auth.isLoggedIn()" class="favorites-link" routerLink="/favorites" routerLinkActive="active" (click)="closeMobileMenu()">
       <span aria-hidden="true">♥</span>
       <span>{{'nav.favorites' | transloco }}</span>
     </a>
-    <a *ngIf="auth.isLoggedIn()" class="cart-link" routerLink="/cart" routerLinkActive="active" aria-label="Basket">
+    <a *ngIf="auth.isLoggedIn()" class="cart-link" routerLink="/cart" routerLinkActive="active" aria-label="Basket" (click)="closeMobileMenu()">
       <span aria-hidden="true">🛒</span>
       <span>{{'nav.basket' | transloco }}</span>
       <b *ngIf="cart.tickets().length" class="cart-count">{{ cart.tickets().length }}</b>
@@ -48,12 +63,13 @@
       class="login-button"
       routerLink="/login"
       routerLinkActive="login-active"
+      (click)="closeMobileMenu()"
     >
       {{'nav.login' | transloco }}
     </a>
 
     <ng-template #userMenu>
-      <button class="logout-button" type="button" (click)="auth.logout()">Logout</button>
+      <button class="logout-button" type="button" (click)="auth.logout(); closeMobileMenu()">Logout</button>
     </ng-template>
 
     <div class="language-selector">
@@ -67,5 +83,6 @@
       <button type="button" role="menuitem" (click)="setLanguage('ENG')">🇬🇧 English</button>
     </div>
     </div>
+  </div>
   </div>
 </header>

@@ -55,6 +55,7 @@
   "selectAvailableSeat": "Select an available seat to see its price.",
   "selectedSeat": "Selected seats",
   "total": "Total",
+  "duplicateTicket": "One of these seats is already in your basket.",
   "row": "Row",
   "seat": "Seat",
   "chooseSeat": "Choose a seat",
@@ -77,6 +78,6 @@
   "inCinemas": "In Cinemas",
   "releaseDate": "December 20, 2026",
   "bookTickets": "Book Tickets",
-  "watch": "Watch "
+  "watch": "Watch Trailer"
 }
 }
