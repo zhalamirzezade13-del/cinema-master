@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AdminComponent } from './pages/admin/admin.component';
 import { adminGuard } from './core/admin.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { MoviesComponent } from './pages/movies/movies.component';
@@ -9,11 +8,8 @@ import { PaymentComponent } from './pages/payment/payment.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { authGuard } from './core/auth.guard';
-import { MoviesComponent as AdminMoviesComponent } 
-from './pages/admin/movies/movies.component';
 
 import { FavoritesComponent } from './pages/favorites/favorites.component';
-import { ManagementComponent } from './pages/admin/management/management.component';
 export const routes: Routes = [{
   path: '',
   component: HomeComponent
@@ -44,47 +40,47 @@ export const routes: Routes = [{
 
 {
   path: 'admin',
-  component: AdminComponent,
+  loadComponent: () => import('./pages/admin/admin.component').then(m => m.AdminComponent),
   canActivate: [adminGuard],
   children: [
     {
       path: 'movies',
-      component: AdminMoviesComponent,
+      loadComponent: () => import('./pages/admin/movies/movies.component').then(m => m.MoviesComponent),
       canActivate: [adminGuard]
     },
     {
       path: 'bookings',
-      component: ManagementComponent,
+      loadComponent: () => import('./pages/admin/management/management.component').then(m => m.ManagementComponent),
       data: { section: 'bookings', demoMode: true },
       canActivate: [adminGuard]
     },
     {
       path: 'comments',
-      component: ManagementComponent,
+      loadComponent: () => import('./pages/admin/management/management.component').then(m => m.ManagementComponent),
       data: { section: 'comments', demoMode: true },
       canActivate: [adminGuard]
     },
     {
       path: 'halls',
-      component: ManagementComponent,
+      loadComponent: () => import('./pages/admin/management/management.component').then(m => m.ManagementComponent),
       data: { section: 'halls' },
       canActivate: [adminGuard]
     },
     {
       path: 'sessions',
-      component: ManagementComponent,
+      loadComponent: () => import('./pages/admin/management/management.component').then(m => m.ManagementComponent),
       data: { section: 'sessions' },
       canActivate: [adminGuard]
     },
     {
       path: 'messages',
-      component: ManagementComponent,
+      loadComponent: () => import('./pages/admin/management/management.component').then(m => m.ManagementComponent),
       data: { section: 'messages' },
       canActivate: [adminGuard]
     },
     {
       path: 'users',
-      component: ManagementComponent,
+      loadComponent: () => import('./pages/admin/management/management.component').then(m => m.ManagementComponent),
       data: { section: 'users' },
       canActivate: [adminGuard]
     }
