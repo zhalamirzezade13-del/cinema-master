@@ -33,10 +33,13 @@ export class MovieCardComponent {
 }
 
 export interface Movie {
+  id?: string;
   title: string;
   poster: string;
   rating: number;
   genre: string;
   duration: string;
   description?: string;
+  releaseDate: string;
+  status: 'now_playing' | 'upcoming';
 }

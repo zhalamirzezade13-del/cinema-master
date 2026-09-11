@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MovieFeedbackComponent } from './feedback/movie-feedback.component';
 import { TheatreComponent } from '../theatre/theatre.component';
 
 @Component({
   selector: 'app-movie-detail',
-  imports: [CommonModule, RouterLink, TheatreComponent],
+  imports: [CommonModule, RouterLink, TheatreComponent, MovieFeedbackComponent],
   templateUrl: './movie-detail.component.html',
   styleUrl: './movie-detail.component.css'
 })
 export class MovieDetailComponent {
   movie = { title: 'Movie', poster: '', rating: '', genre: '', duration: '', description: '' };
   hallId = 1;
+  movieId = '';
 
   private readonly movieHalls: Record<string, number> = {
     'Avatar: Fire and Ash': 1,
@@ -29,6 +31,7 @@ export class MovieDetailComponent {
 
   constructor(route: ActivatedRoute) {
     route.queryParamMap.subscribe(params => {
+      this.movieId = params.get('id') ?? '';
       this.movie = {
         title: params.get('title') ?? 'Movie',
         poster: params.get('poster') ?? '',

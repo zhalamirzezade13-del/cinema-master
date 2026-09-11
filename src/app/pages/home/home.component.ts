@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
       error: error => {
         console.error('Upcoming API error:', error);
         this.errorMessage =
-          'Gələcək filmlər yüklənə bilmədi.';
+          'Gələcək filmlər yüklənə bilmədi.'; 
         this.loadingComingSoon = false;
       }
     });

@@ -29,13 +29,13 @@ export class MoviesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.movieApi.getNowPlaying().subscribe({
+    this.movieApi.getAllMovies().subscribe({
       next: movies => {
         this.movies = movies;
         this.loading = false;
       },
       error: error => {
-        console.error('TMDB API error:', error);
+        console.error('Movies loading error:', error);
         this.errorMessage =
           'Filmlər yüklənə bilmədi.';
         this.loading = false;

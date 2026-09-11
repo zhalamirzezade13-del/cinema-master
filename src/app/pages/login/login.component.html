@@ -3,11 +3,21 @@
     <p class="eyebrow">{{'login.welcome' | transloco }}</p>
     <h1>{{'login.title' | transloco }}</h1>
     <p>{{'login.description' | transloco }}</p>
-    <form (submit)="$event.preventDefault(); login()">
-      <label>Email<input type="email" [(ngModel)]="email" name="email" placeholder="admin@gmail.com" autocomplete="email" required></label>
-      <label>Password<input type="password" [(ngModel)]="password" name="password" placeholder="1234" autocomplete="current-password" required></label>
+    <form #loginForm="ngForm" (ngSubmit)="loginForm.valid && login()">
+      <label>Email<input type="email" name="email" [(ngModel)]="email" #emailField="ngModel" autocomplete="email" placeholder="name@example.com" email pattern="[^\s@]+@[^\s@]+\.[^\s@]+" required [attr.aria-invalid]="emailField.invalid && (emailField.dirty || emailField.touched)" [attr.aria-describedby]="emailField.invalid && (emailField.dirty || emailField.touched) ? 'email-warning' : null"></label>
+      <p *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)" id="email-warning" class="field-warning" role="status">{{ 'register.emailFormat' | transloco }}</p>
+      <div class="password-field">
+        <label for="login-password">{{ 'register.password' | transloco }}</label>
+        <div class="password-control">
+          <input id="login-password" [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" autocomplete="current-password" required>
+          <button class="password-toggle" type="button" (click)="showPassword = !showPassword" [attr.aria-label]="(showPassword ? 'register.hidePassword' : 'register.showPassword') | transloco" [attr.aria-pressed]="showPassword">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path *ngIf="showPassword" d="m3 3 18 18"/></svg>
+          </button>
+        </div>
+      </div>
       <p *ngIf="loginError" class="login-error" role="alert">{{'login.error' | transloco }}</p>
       <button type="submit">{{'login.button' | transloco }}</button>
     </form>
+    <p class="auth-switch">{{ 'register.noAccount' | transloco }} <a routerLink="/register" [queryParams]="{ returnUrl: returnUrl }">{{ 'register.title' | transloco }}</a></p>
   </section>
 </main>

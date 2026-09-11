@@ -1,0 +1,36 @@
+<section class="feedback" aria-labelledby="feedback-title">
+  <h2 id="feedback-title">{{ 'feedback.title' | transloco }}</h2>
+  <div class="feedback-layout">
+    <div>
+      <div class="mode-buttons">
+        <button type="button" [class.active]="mode === 'comment'" [attr.aria-pressed]="mode === 'comment'" [disabled]="saving" (click)="setMode('comment')">{{ 'feedback.comment' | transloco }}</button>
+        <button type="button" [class.active]="mode === 'message'" [attr.aria-pressed]="mode === 'message'" [disabled]="saving" (click)="setMode('message')">{{ 'feedback.message' | transloco }}</button>
+      </div>
+      <p>{{ (mode === 'comment' ? 'feedback.publicNote' : 'feedback.privateNote') | transloco }}</p>
+      <p *ngIf="!account.isLoggedIn()">{{ 'feedback.loginRequired' | transloco }} <a routerLink="/login" [queryParams]="{ returnUrl: router.url }">{{ 'feedback.login' | transloco }}</a></p>
+      <form (ngSubmit)="submit()" #feedbackForm="ngForm">
+        <fieldset [disabled]="saving || !account.isLoggedIn()">
+          <label>{{ 'feedback.name' | transloco }}<input name="name" [(ngModel)]="name" maxlength="100" required autocomplete="name"></label>
+          <label *ngIf="mode === 'comment'">{{ 'feedback.rating' | transloco }}<select name="rating" [(ngModel)]="rating"><option *ngFor="let value of [10,9,8,7,6,5,4,3,2,1]" [ngValue]="value">{{ value }} / 10</option></select></label>
+          <label *ngIf="mode === 'message'">{{ 'feedback.subject' | transloco }}<input name="subject" [(ngModel)]="subject" maxlength="150" required></label>
+          <label>{{ (mode === 'comment' ? 'feedback.commentText' : 'feedback.messageText') | transloco }}<textarea name="text" [(ngModel)]="text" maxlength="2000" rows="5" required></textarea></label>
+          <small>{{ text.length }} / 2000</small>
+          <button type="submit" [disabled]="feedbackForm.invalid || !text.trim()">{{ (saving ? 'feedback.sending' : 'feedback.send') | transloco }}</button>
+        </fieldset>
+      </form>
+      <p *ngIf="error" class="error" role="alert">{{ error | transloco }}</p>
+      <p *ngIf="notice" class="success" role="status">{{ notice | transloco }}</p>
+    </div>
+    <div class="comments">
+      <h3>{{ 'feedback.comments' | transloco }} ({{ comments.length }})</h3>
+      <p *ngIf="loading" role="status">{{ 'feedback.loading' | transloco }}</p>
+      <p *ngIf="listError" class="error" role="alert">{{ 'feedback.loadError' | transloco }} <button type="button" (click)="loadComments()">{{ 'feedback.retry' | transloco }}</button></p>
+      <p *ngIf="!loading && !listError && !comments.length">{{ 'feedback.empty' | transloco }}</p>
+      <article *ngFor="let comment of comments">
+        <header><strong>{{ comment.authorName }}</strong><span>★ {{ comment.rating }} / 10</span></header>
+        <p class="content">{{ comment.text }}</p>
+        <div *ngIf="comment.adminReply" class="reply"><strong>{{ 'feedback.adminReply' | transloco }}</strong><p class="content">{{ comment.adminReply }}</p></div>
+      </article>
+    </div>
+  </div>
+</section>

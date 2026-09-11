@@ -1,0 +1,151 @@
+<div class="admin-layout">
+
+  <aside class="admin-sidebar">
+
+    <div class="admin-brand">
+      <span class="brand-icon">🎬</span>
+
+      <div>
+        <strong>Cinema</strong>
+        <small>{{ 'admin.panel' | transloco }}</small>
+      </div>
+    </div>
+
+
+    <nav class="admin-nav">
+
+      <a
+        class="nav-item"
+        routerLink="/admin"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact:true}">
+        {{ 'admin.dashboard' | transloco }}
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/admin/movies"
+        routerLinkActive="active">
+        {{ 'admin.movies' | transloco }}
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/admin/bookings"
+        routerLinkActive="active">
+        {{ 'admin.bookings' | transloco }}
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/admin/comments"
+        routerLinkActive="active">
+        {{ 'admin.comments' | transloco }}
+      </a>
+
+
+      <a class="nav-item" routerLink="/admin/halls" routerLinkActive="active">{{ 'admin.hallsSessions' | transloco }}</a>
+
+
+      <a class="nav-item" routerLink="/admin/messages" routerLinkActive="active">{{ 'admin.messages' | transloco }}</a>
+
+
+      <a class="nav-item" routerLink="/admin/users" routerLinkActive="active">{{ 'admin.users' | transloco }}</a>
+
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+      <a
+        routerLink="/"
+        class="view-site">
+        {{ 'admin.website' | transloco }}
+      </a>
+
+
+      <button
+        class="logout-btn"
+        type="button"
+        (click)="logout()">
+        {{ 'admin.logout' | transloco }}
+      </button>
+
+    </div>
+
+
+  </aside>
+
+
+
+  <section class="admin-content">
+
+
+    <header class="admin-topbar">
+
+      <div>
+        <h2>{{ pageTitle | transloco }}</h2>
+        <p>{{ 'admin.welcome' | transloco }}</p>
+      </div>
+
+
+      <div class="topbar-actions">
+
+
+        <div class="language-switcher">
+
+          <button
+            type="button"
+            class="lang-btn"
+            [class.active]="transloco.getActiveLang() === 'az'" (click)="setLanguage('az')">
+            AZE
+          </button>
+
+
+          <button
+            type="button"
+            class="lang-btn"
+            [class.active]="transloco.getActiveLang() === 'en'" (click)="setLanguage('en')">
+            ENG
+          </button>
+
+        </div>
+
+
+        <div class="admin-user">
+          {{ 'admin.administrator' | transloco }}
+        </div>
+
+
+      </div>
+
+
+    </header>
+
+
+
+    
+    <div *ngIf="showDashboard">
+      <p *ngIf="error" role="alert">{{ error | transloco }}</p>
+      <div class="dashboard-grid">
+        <div class="stat-card"><span>{{ 'admin.allMovies' | transloco }}</span><strong>{{ loading ? '…' : movies.length }}</strong></div>
+        <div class="stat-card"><span>{{ 'admin.nowPlaying' | transloco }}</span><strong>{{ loading ? '…' : getNowPlayingCount() }}</strong></div>
+        <div class="stat-card"><span>{{ 'admin.upcoming' | transloco }}</span><strong>{{ loading ? '…' : getUpcomingCount() }}</strong></div>
+      </div>
+      <section class="admin-section">
+        <h3>{{ 'admin.movieManagement' | transloco }}</h3>
+        <p>{{ 'admin.movieIntro' | transloco }}</p>
+        <a routerLink="/admin/movies">{{ 'admin.goMovies' | transloco }}</a>
+      </section>
+    </div>
+    <router-outlet></router-outlet>
+
+
+  </section>
+
+
+</div>

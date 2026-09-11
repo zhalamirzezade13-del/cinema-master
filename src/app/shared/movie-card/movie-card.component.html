@@ -2,7 +2,7 @@
   <button type="button" class="favorite-button" [class.active]="favorites.isFavorite(movie)" (click)="toggleFavorite($event)" [attr.aria-label]="favorites.isFavorite(movie) ? 'Remove ' + movie.title + ' from favorites' : 'Add ' + movie.title + ' to favorites'">
     {{ favorites.isFavorite(movie) ? '♥' : '♡' }}
   </button>
-  <a class="movie-link" [routerLink]="['/movie']" [queryParams]="{ title: movie.title, poster: movie.poster, rating: movie.rating, genre: movie.genre, duration: movie.duration, description: movie.description }" [attr.aria-label]="'View details for ' + movie.title">
+  <a class="movie-link" [routerLink]="['/movie']" [queryParams]="{ id: movie.id, title: movie.title, poster: movie.poster, rating: movie.rating, genre: movie.genre, duration: movie.duration, description: movie.description }" [attr.aria-label]="'View details for ' + movie.title">
     <img [src]="movie.poster" [alt]="movie.title" class="movie-poster" />
     <div class="movie-content">
       <div class="movie-top">

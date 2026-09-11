@@ -1,0 +1,85 @@
+<section class="panel">
+  <header class="section-heading">
+    <div><h2>{{ titles[section] | transloco }}</h2><p>{{ descriptions[section] | transloco }}</p></div>
+    <div class="actions"><button *ngIf="supportsDemo" type="button" class="secondary" [disabled]="loading || saving" (click)="toggleDemo()">{{ (demoMode ? 'admin.showLiveData' : 'admin.showDemoData') | transloco }}</button><button type="button" class="secondary" [disabled]="loading || saving" (click)="load()">{{ 'admin.refresh' | transloco }}</button>
+    <button *ngIf="editable" type="button" [disabled]="loading" (click)="open()">+ {{ (section === 'halls' ? 'admin.addHall' : 'admin.addSession') | transloco }}</button>
+    </div>
+  </header>
+  <p *ngIf="supportsDemo && demoMode" class="notice demo-notice" role="status">{{ 'admin.demoDataNotice' | transloco }}</p>
+  <nav *ngIf="editable" class="tabs" [attr.aria-label]="'admin.hallsSessions' | transloco">
+    <button type="button" [class.secondary]="section !== 'halls'" [attr.aria-pressed]="section === 'halls'" (click)="switchSection('halls')">{{ 'admin.halls' | transloco }}</button>
+    <button type="button" [class.secondary]="section !== 'sessions'" [attr.aria-pressed]="section === 'sessions'" (click)="switchSection('sessions')">{{ 'admin.sessions' | transloco }}</button>
+  </nav>
+  <p *ngIf="error && !editor.open" class="notice error" role="alert">{{ error | transloco }} <button type="button" class="secondary" (click)="load()">{{ 'admin.retry' | transloco }}</button></p>
+  <p *ngIf="notice" class="notice success" role="status">{{ notice | transloco }}</p>
+  <div class="summary-grid" *ngIf="!error">
+    <div class="summary-card"><span>{{ 'admin.totalRecords' | transloco }}</span><strong>{{ loading ? '—' : records.length }}</strong></div>
+    <div class="summary-card"><span>{{ summary.label | transloco }}</span><strong>{{ loading ? '—' : summary.value }}</strong></div>
+    <div class="summary-card"><span>{{ 'admin.filteredRecords' | transloco }}</span><strong>{{ loading ? '—' : filtered.length }}</strong></div>
+  </div>
+  <div class="filter-bar">
+  <label class="search">{{ 'admin.search' | transloco }}<input type="search" [(ngModel)]="search" [placeholder]="'admin.searchPlaceholder' | transloco"></label>
+  <label *ngIf="filterOptions[section].length">{{ 'admin.filter' | transloco }}
+    <select [(ngModel)]="filter"><option value="all">{{ 'admin.all' | transloco }}</option><option *ngFor="let option of filterOptions[section]" [value]="option">{{ statusLabel(option) }}</option></select>
+  </label>
+  </div>
+  <p *ngIf="section === 'sessions'">{{ 'admin.timezone' | transloco }}</p>
+  <p class="empty" *ngIf="loading" role="status">{{ 'admin.loading' | transloco }}</p>
+  <div class="empty" *ngIf="!loading && !error && !filtered.length">
+    <h3>{{ ('admin.' + (records.length ? 'emptySearch' : section + 'Empty')) | transloco }}</h3>
+    <p *ngIf="!records.length">{{ ('admin.' + section + 'Hint') | transloco }}</p>
+    <button *ngIf="search || filter !== 'all'" class="secondary" type="button" (click)="clearFilters()">{{ 'admin.clearFilters' | transloco }}</button>
+  </div>
+  <article class="record" *ngFor="let record of filtered">
+    <div class="record-body"><strong>{{ title(record) }}</strong><p class="record-preview">{{ detail(record) }}</p><p *ngIf="section === 'messages'">{{ record['name'] ?? record['senderName'] }} · {{ record['email'] }}</p><p *ngIf="section === 'comments'">{{ record['authorName'] ?? record['name'] ?? record['userId'] }}<span *ngIf="record['rating'] != null"> · {{ 'admin.rating' | transloco }}: {{ record['rating'] }}</span></p><span *ngIf="section !== 'halls'" class="badge">{{ recordStatus(record) }}</span></div>
+    <div class="actions">
+      <button type="button" class="secondary" (click)="showDetails(record)">{{ 'admin.details' | transloco }}</button>
+      <button *ngIf="canReply" type="button" [disabled]="saving" (click)="showDetails(record)">{{ (record['adminReply'] ? 'admin.editReply' : 'admin.writeReply') | transloco }}</button>
+      <button *ngIf="editable" type="button" class="secondary" (click)="open(record)">{{ 'admin.edit' | transloco }}</button>
+      <button *ngIf="section === 'messages'" type="button" class="secondary" [disabled]="saving" (click)="toggleRead(record)">{{ (record['read'] === true ? 'admin.markUnread' : 'admin.markRead') | transloco }}</button>
+    </div>
+  </article>
+</section>
+<dialog #editor aria-labelledby="management-title" (cancel)="saving && $event.preventDefault()">
+  <h3 id="management-title">{{ titles[section] | transloco }} — {{ (editingId ? 'admin.edit' : 'admin.newRecord') | transloco }}</h3>
+  <form *ngIf="editable" #editForm="ngForm" (ngSubmit)="editForm.valid && save()">
+    <div class="form-grid">
+      <label *ngFor="let field of fields; trackBy: trackField">{{ field.label | transloco }}
+        <select *ngIf="field.type === 'select'; else inputField" [name]="field.key" [(ngModel)]="form[field.key]" required>
+          <option value="" disabled>{{ 'admin.choose' | transloco }}</option><option *ngFor="let option of field.options; trackBy: trackOption" [value]="option.id">{{ option.name }}</option>
+        </select>
+        <ng-template #inputField><input [type]="field.type" [name]="field.key" [(ngModel)]="form[field.key]" [min]="field.min ?? null" [step]="field.key === 'price' ? '0.01' : '1'" required></ng-template>
+      </label>
+    </div>
+    <p *ngIf="section === 'sessions' && (!halls.length || !movies.length)">{{ 'admin.sessionPrerequisite' | transloco }}</p>
+    <p *ngIf="error" class="notice error" role="alert">{{ error | transloco }}</p>
+    <div class="actions"><button type="button" class="secondary" [disabled]="saving" (click)="editor.close()">{{ 'admin.cancel' | transloco }}</button><button type="submit" [disabled]="editForm.invalid || saving">{{ (saving ? 'admin.saving' : 'admin.save') | transloco }}</button></div>
+  </form>
+</dialog>
+
+<dialog #detailsDialog aria-labelledby="details-title" (cancel)="saving && $event.preventDefault()">
+  <ng-container *ngIf="selected">
+    <h3 id="details-title">{{ title(selected) }}</h3>
+    <p *ngIf="section === 'users'">{{ 'admin.profileNote' | transloco }}</p>
+    <form *ngIf="canReply" class="reply-form" (ngSubmit)="saveReply()">
+      <blockquote>{{ detail(selected) }}</blockquote>
+      <div *ngIf="selected['adminReply']" class="saved-reply">
+        <strong>{{ 'admin.adminReply' | transloco }}</strong>
+        <p>{{ selected['adminReply'] }}</p>
+        <small>{{ formatDate(selected['repliedAt']) }}</small>
+      </div>
+      <label for="record-reply">{{ 'admin.yourReply' | transloco }}</label>
+      <textarea id="record-reply" name="reply" [(ngModel)]="replyText" maxlength="2000" rows="4" required [disabled]="saving" [placeholder]="'admin.replyPlaceholder' | transloco"></textarea>
+      <small>{{ replyText.length }} / 2000</small>
+      <p *ngIf="replyError" class="notice error" role="alert">{{ replyError | transloco }}</p>
+      <p *ngIf="replyNotice" class="notice success" role="status">{{ replyNotice | transloco }}</p>
+      <div class="actions"><button type="submit" [disabled]="saving || !replyText.trim() || replyText.trim() === selected['adminReply']">{{ (saving ? 'admin.saving' : 'admin.saveReply') | transloco }}</button></div>
+    </form>
+    <dl class="detail-grid"><div *ngFor="let row of detailRows"><dt>{{ row.label | transloco }}</dt><dd>{{ row.value }}</dd></div></dl>
+    <p *ngIf="error" class="notice error" role="alert">{{ error | transloco }}</p>
+    <div class="actions">
+      <button *ngIf="section === 'messages'" type="button" [disabled]="saving" (click)="toggleRead(selected)">{{ (selected['read'] === true ? 'admin.markUnread' : 'admin.markRead') | transloco }}</button>
+      <button type="button" class="secondary" [disabled]="saving" (click)="detailsDialog.close()">{{ 'admin.close' | transloco }}</button>
+    </div>
+  </ng-container>
+</dialog>

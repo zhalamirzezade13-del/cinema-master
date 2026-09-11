@@ -1,0 +1,14 @@
+:host { display: block; background: #090b0f; color: #f8fafc; min-height: 100vh; }
+.account-page { max-width: 1000px; margin: auto; padding: 48px 20px 80px; }
+h1 { font-size: clamp(28px, 5vw, 40px); margin: 8px 0; } h2, h3 { margin: 0 0 10px; }
+p { color: #abb5c1; line-height: 1.6; overflow-wrap: anywhere; }
+.eyebrow { color: #ff9d20; letter-spacing: 2px; font-size: 12px; }
+.profile, .inbox { padding: clamp(20px, 4vw, 32px); border: 1px solid #303947; background: #141b25; border-radius: 16px; margin-top: 28px; }
+.profile { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.avatar { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: #ff9d20; color: #191005; font-size: 32px; font-weight: 700; }
+.shortcuts { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
+a { display: inline-block; padding: 12px 18px; border-radius: 8px; background: #222c3a; color: #ffbd70; text-decoration: none; }
+a:focus-visible { outline: 2px solid #ff9d20; outline-offset: 3px; }
+article { padding: 24px 0; border-top: 1px solid #303947; } article header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+small { color: #abb5c1; } .badge { color: #ffbd70; font-size: 12px; padding: 6px 10px; border-radius: 20px; background: #3c2c18; }
+.content { white-space: pre-wrap; } .reply { border-left: 3px solid #ff9d20; padding: 16px; border-radius: 0 8px 8px 0; background: #222c3a; } .error { color: #ffb4b4; }

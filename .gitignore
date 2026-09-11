@@ -44,3 +44,8 @@ Thumbs.db
 # Local TMDB credentials
 src/environments/environment.local.ts
 dist*.zip
+
+firebase-debug.log*
+.env
+.env.*
+!.env.example

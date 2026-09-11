@@ -1,0 +1,116 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+
+    match /movies/{movieId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    function isValidNewUser() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['name', 'email', 'role', 'createdAt']) &&
+        data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+        data.email is string && data.email == request.auth.token.email &&
+        data.role == 'user' && data.createdAt == request.time;
+    }
+
+    match /users/{userId} {
+      allow read: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+      allow create: if isSignedIn() && request.auth.uid == userId && isValidNewUser();
+      allow update, delete: if false;
+    }
+
+    // Admin forms write only these fields; role documents remain read-only.
+    function isValidHall() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['name', 'type', 'capacity']) &&
+        data.keys().hasOnly(['name', 'type', 'capacity']) &&
+        data.name is string && data.name.size() > 0 && data.name.size() <= 200 &&
+        data.type is string && data.type.size() > 0 && data.type.size() <= 100 &&
+        data.capacity is int && data.capacity > 0 && data.capacity <= 10000;
+    }
+
+    function isValidSession() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['movieId', 'hallId', 'startsAt', 'price']) &&
+        data.keys().hasOnly(['movieId', 'hallId', 'startsAt', 'price']) &&
+        data.movieId is string && data.movieId.size() > 0 && data.movieId.size() <= 1500 &&
+        data.hallId is string && data.hallId.size() > 0 && data.hallId.size() <= 1500 &&
+        exists(/databases/$(database)/documents/movies/$(data.movieId)) &&
+        exists(/databases/$(database)/documents/halls/$(data.hallId)) &&
+        data.startsAt is string && data.startsAt.size() >= 16 && data.startsAt.size() <= 30 &&
+        data.price is number && data.price >= 0 && data.price <= 100000;
+    }
+
+    match /halls/{hallId} {
+      allow read: if isAdmin();
+      allow create, update: if isAdmin() && isValidHall();
+    }
+
+    match /sessions/{sessionId} {
+      allow read: if isAdmin();
+      allow create, update: if isAdmin() && isValidSession();
+    }
+
+    match /bookings/{bookingId} {
+      allow read: if isAdmin();
+    }
+
+    // Admin replies preserve all original comment/message fields and ownership.
+    function isValidAdminReply() {
+      let data = request.resource.data;
+      return data.diff(resource.data).affectedKeys().hasOnly(['adminReply', 'repliedAt']) &&
+        data.adminReply is string && data.adminReply.size() > 0 && data.adminReply.size() <= 2000 &&
+        data.repliedAt is string && data.repliedAt.size() == 24;
+    }
+
+    // Visitor submissions: immutable author, film association, and server creation time.
+    function validFeedbackBase(data) {
+      return isSignedIn() && data.userId == request.auth.uid &&
+        data.movieKey is string && data.movieKey.size() > 0 && data.movieKey.size() <= 1500 &&
+        data.movieTitle is string && data.movieTitle.size() > 0 && data.movieTitle.size() <= 300 &&
+        data.createdAt == request.time;
+    }
+    function validVisitorComment() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['userId', 'movieKey', 'movieTitle', 'createdAt', 'authorName', 'text', 'rating', 'status']) &&
+        validFeedbackBase(data) &&
+        data.authorName is string && data.authorName.size() > 0 && data.authorName.size() <= 100 &&
+        data.text is string && data.text.size() > 0 && data.text.size() <= 2000 &&
+        data.rating is int && data.rating >= 1 && data.rating <= 10 && data.status == 'approved';
+    }
+    function validVisitorMessage() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['userId', 'movieKey', 'movieTitle', 'createdAt', 'name', 'email', 'subject', 'message', 'read']) &&
+        validFeedbackBase(data) &&
+        data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+        data.email is string && data.email == request.auth.token.get('email', '') &&
+        data.subject is string && data.subject.size() > 0 && data.subject.size() <= 150 &&
+        data.message is string && data.message.size() > 0 && data.message.size() <= 2000 && data.read == false;
+    }
+
+    match /comments/{commentId} {
+      allow read: if resource.data.status == 'approved' || isAdmin();
+      allow create: if validVisitorComment();
+      allow update: if isAdmin() && isValidAdminReply();
+    }
+
+    match /messages/{messageId} {
+      allow read: if isSignedIn() && (resource.data.get('userId', '') == request.auth.uid || isAdmin());
+      allow create: if validVisitorMessage();
+      allow update: if isAdmin() &&
+        ((request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']) &&
+          request.resource.data.read is bool) || isValidAdminReply());
+    }
+  }
+}

@@ -1,8 +1,9 @@
+import { auth as firebaseAuth } from './firebase';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from './auth.service';
 
-export const authGuard: CanActivateFn = () => {
-  const auth = inject(AuthService);
-  return auth.isLoggedIn() || inject(Router).createUrlTree(['/login']);
+export const authGuard: CanActivateFn = async () => {
+  const router = inject(Router);
+  await firebaseAuth.authStateReady();
+  return !!firebaseAuth.currentUser || router.createUrlTree(['/login']);
 };

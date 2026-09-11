@@ -1,0 +1,36 @@
+<main class="login-page">
+  <section class="login-card">
+    <p class="eyebrow">CINEMA MASTER</p>
+    <h1>{{ 'register.title' | transloco }}</h1>
+    <p>{{ 'register.description' | transloco }}</p>
+    <form *ngIf="!created" #registerForm="ngForm" (ngSubmit)="registerForm.valid && register()">
+      <label>{{ 'register.name' | transloco }}<input name="name" [(ngModel)]="name" autocomplete="name" maxlength="100" required [disabled]="saving"></label>
+      <label>Email<input type="email" name="email" [(ngModel)]="email" #emailField="ngModel" autocomplete="email" placeholder="name@example.com" email pattern="[^\s@]+@[^\s@]+\.[^\s@]+" required [disabled]="saving" [attr.aria-invalid]="emailField.invalid && (emailField.dirty || emailField.touched)" [attr.aria-describedby]="emailField.invalid && (emailField.dirty || emailField.touched) ? 'email-warning' : null"></label>
+      <p *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)" id="email-warning" class="field-warning" role="status">{{ 'register.emailFormat' | transloco }}</p>
+      <div class="password-field">
+        <label for="register-password">{{ 'register.password' | transloco }}</label>
+        <div class="password-control">
+          <input id="register-password" [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" autocomplete="new-password" required minlength="6" aria-describedby="password-hint" [disabled]="saving">
+          <button class="password-toggle" type="button" (click)="showPassword = !showPassword" [attr.aria-label]="(showPassword ? 'register.hidePassword' : 'register.showPassword') | transloco" [attr.aria-pressed]="showPassword" [disabled]="saving">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path *ngIf="showPassword" d="m3 3 18 18"/></svg>
+          </button>
+        </div>
+      </div>
+      <small id="password-hint">{{ 'register.passwordHint' | transloco }}</small>
+      <div class="password-field">
+        <label for="register-confirmPassword">{{ 'register.confirmPassword' | transloco }}</label>
+        <div class="password-control">
+          <input id="register-confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" name="confirmPassword" [(ngModel)]="confirmPassword" autocomplete="new-password" required minlength="6" [disabled]="saving">
+          <button class="password-toggle" type="button" (click)="showConfirmPassword = !showConfirmPassword" [attr.aria-label]="(showConfirmPassword ? 'register.hidePassword' : 'register.showPassword') | transloco" [attr.aria-pressed]="showConfirmPassword" [disabled]="saving">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path *ngIf="showConfirmPassword" d="m3 3 18 18"/></svg>
+          </button>
+        </div>
+      </div>
+      <button type="submit" [disabled]="saving || registerForm.invalid">{{ (saving ? 'register.saving' : 'register.submit') | transloco }}</button>
+    </form>
+    <p *ngIf="created" class="success" role="status">{{ 'register.created' | transloco }}</p>
+    <p *ngIf="error" class="login-error" role="alert" style="margin-top: 16px">{{ error | transloco }}</p>
+    <p *ngIf="created" class="auth-switch"><a routerLink="/movies">{{ 'register.continue' | transloco }}</a></p>
+    <p *ngIf="!created && !saving" class="auth-switch">{{ 'register.haveAccount' | transloco }} <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">{{ 'register.login' | transloco }}</a></p>
+  </section>
+</main>

@@ -1,0 +1,22 @@
+<main class="account-page">
+  <header><p class="eyebrow">CINEMA MASTER</p><h1>{{ 'account.title' | transloco }}</h1><p>{{ 'account.description' | transloco }}</p></header>
+  <section class="profile" aria-labelledby="profile-title">
+    <div class="avatar" aria-hidden="true">{{ (name || email).slice(0, 1).toUpperCase() }}</div>
+    <div><h2 id="profile-title">{{ name || ('account.user' | transloco) }}</h2><p>{{ email }}</p><p *ngIf="joined">{{ 'account.joined' | transloco }}: {{ joined | date:'dd.MM.yyyy' }}</p></div>
+    <p *ngIf="profileError" class="error" role="alert">{{ 'account.profileError' | transloco }}</p>
+  </section>
+  <nav class="shortcuts" [attr.aria-label]="'account.links' | transloco"><a routerLink="/favorites">{{ 'nav.favorites' | transloco }}</a><a routerLink="/cart">{{ 'nav.basket' | transloco }}</a><a routerLink="/movies">{{ 'nav.movies' | transloco }}</a></nav>
+  <section class="inbox" aria-labelledby="messages-title">
+    <h2 id="messages-title">{{ 'account.messages' | transloco }}</h2>
+    <p>{{ 'account.messagesNote' | transloco }}</p>
+    <p *ngIf="loading" role="status">{{ 'account.loading' | transloco }}</p>
+    <p *ngIf="error" class="error" role="alert">{{ 'account.error' | transloco }}</p>
+    <p *ngIf="!loading && !error && !messages.length">{{ 'account.empty' | transloco }}</p>
+    <article *ngFor="let message of messages">
+      <header><h3>{{ message.subject }}</h3><span class="badge">{{ (message.adminReply ? 'account.replied' : 'account.waiting') | transloco }}</span></header>
+      <small>{{ message.movieTitle }}</small>
+      <p class="content">{{ message.message }}</p>
+      <div *ngIf="message.adminReply" class="reply"><strong>{{ 'account.adminReply' | transloco }}</strong><p class="content">{{ message.adminReply }}</p></div>
+    </article>
+  </section>
+</main>
