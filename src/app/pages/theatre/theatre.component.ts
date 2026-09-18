@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { CartService } from '../../core/cart.service';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { VipTheatreViewComponent } from './vip-theatre-view.component';
 type Seat = {
   row: number;
   number: number;
@@ -11,9 +12,32 @@ type Seat = {
   status: 'available' | 'occupied';
 };
 
+type Hall = {
+  id: number;
+  name: string;
+  type: string;
+  detail: string;
+  layout: 'premium' | 'standard' | 'vip' | 'family';
+  rows: number[];
+  blocks: number[][];
+};
+
+function seatBlocks(sizes: number[]): number[][] {
+  let first = 1;
+  return sizes.map(size => {
+    const block = Array.from({ length: size }, (_, index) => first + index);
+    first += size;
+    return block;
+  });
+}
+
+function hallRows(count: number): number[] {
+  return Array.from({ length: count }, (_, index) => count - index);
+}
+
 @Component({
   selector: 'app-theatre',
-  imports: [CommonModule, TranslocoPipe],
+  imports: [CommonModule, TranslocoPipe, VipTheatreViewComponent],
   templateUrl: './theatre.component.html',
   styleUrl: './theatre.component.css'
 })
@@ -26,20 +50,24 @@ export class TheatreComponent {
       if (hall) this.selectHall(hall);
     }
   }
-  readonly rows = Array.from({ length: 12 }, (_, index) => 12 - index);
-  readonly leftSeats = Array.from({ length: 12 }, (_, index) => 12 - index);
-  readonly rightSeats = Array.from({ length: 12 }, (_, index) => index + 13);
   selectedSeats: Seat[] = [];
+  focusedSeat: Seat | null = null;
+  vipView: '3d' | '2d' | 'seat' | 'stage' = '3d';
   bookingError = '';
-  halls = [
-    { id: 1, name: 'Hall 1', type: 'Premium', detail: 'Dolby Atmos · 288 seats' },
-    { id: 2, name: 'Hall 2', type: 'Standard', detail: 'Digital 2D · 240 seats' },
-    { id: 3, name: 'Hall 3', type: 'VIP', detail: 'Recliner seats · 96 seats' },
-    { id: 4, name: 'Hall 4', type: 'Family', detail: 'Digital 2D · 180 seats' }
+  halls: Hall[] = [
+    { id: 1, name: 'Hall 1', type: 'Premium', detail: 'Dolby Atmos · 288 seats', layout: 'premium', rows: hallRows(12), blocks: seatBlocks([8, 8, 8]) },
+    { id: 2, name: 'Hall 2', type: 'Standard', detail: 'Digital 2D · 240 seats', layout: 'standard', rows: hallRows(12), blocks: seatBlocks([10, 10]) },
+    { id: 3, name: 'Hall 3', type: 'VIP', detail: 'Recliner seats · 96 seats', layout: 'vip', rows: hallRows(8), blocks: seatBlocks([4, 4, 4]) },
+    { id: 4, name: 'Hall 4', type: 'Family', detail: 'Digital 2D · 180 seats', layout: 'family', rows: hallRows(9), blocks: seatBlocks([6, 8, 6]) }
   ];
   activeHall = this.halls[0];
 
-  private readonly occupiedSeats = new Set(['1-1', '1-2', '1-3', '2-1', '5-8', '8-4', '10-11']);
+  readonly occupiedSeats = new Set([
+    '1-12-3', '1-10-17', '1-8-4', '1-5-11', '1-2-19',
+    '2-11-2', '2-9-14', '2-6-8', '2-3-17',
+    '3-7-3', '3-4-9', '3-2-6',
+    '4-8-5', '4-6-13', '4-3-2', '4-1-18'
+  ]);
 
   constructor(
     private readonly router: Router,
@@ -52,7 +80,7 @@ export class TheatreComponent {
       row,
       number,
       price: this.getPrice(row),
-      status: this.occupiedSeats.has(`${row}-${number}`) ? 'occupied' : 'available'
+      status: this.occupiedSeats.has(`${this.activeHall.id}-${row}-${number}`) ? 'occupied' : 'available'
     };
   }
 
@@ -66,10 +94,23 @@ export class TheatreComponent {
 
     if (index >= 0) {
       this.selectedSeats = this.selectedSeats.filter((_, seatIndex) => seatIndex !== index);
+      if (this.focusedSeat?.row === seat.row && this.focusedSeat.number === seat.number) {
+        this.focusedSeat = this.selectedSeats[this.selectedSeats.length - 1] ?? null;
+        if (this.vipView !== '2d') this.vipView = '3d';
+      }
       return;
     }
 
     this.selectedSeats = [...this.selectedSeats, seat];
+    if (this.activeHall.layout === 'vip') {
+      this.focusedSeat = seat;
+      if (this.vipView !== '2d') this.vipView = 'seat';
+    }
+  }
+
+  showVipView(view: '3d' | '2d' | 'stage'): void {
+    if (view === 'stage' && !this.focusedSeat) return;
+    this.vipView = view;
   }
 
   isSelected(row: number, number: number): boolean {
@@ -80,9 +121,11 @@ export class TheatreComponent {
     return this.selectedSeats.reduce((total, seat) => total + seat.price, 0);
   }
 
-  selectHall(hall: typeof this.halls[number]): void {
+  selectHall(hall: Hall): void {
     this.activeHall = hall;
     this.selectedSeats = [];
+    this.focusedSeat = null;
+    this.vipView = '3d';
     this.bookingError = '';
   }
 

@@ -5,4 +5,11 @@
 .eyebrow { color: #ff8a00; font-size: 12px; font-weight: 700; letter-spacing: 2px; }.movie-summary h1 { margin: 9px 0 13px; font-size: clamp(32px, 5vw, 50px); }.genre,.description,.screening-note { color: #abb4c0; }
 .facts { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }.facts span { padding: 8px 12px; border-radius: 20px; background: #1c2430; }.facts span:first-child { color: #ffbd31; }.about-film { max-width: 650px; padding: 18px 20px; border-left: 3px solid #ff8a00; border-radius: 0 10px 10px 0; background: rgba(255, 138, 0, .08); }.section-label { margin: 0 0 8px; color: #ffb45b; font-size: 11px; font-weight: 700; letter-spacing: 1.6px; }.description { margin: 0; line-height: 1.65; }.screening-note { margin: 16px 0 0; font-size: 14px; }
 .movie-detail-page app-theatre { display: block; }.movie-detail-page ::ng-deep .theatre-page { min-height: auto; padding: 0; background: transparent; }
+.trailer-section { max-width: 1180px; margin: 0 auto 42px; }
+.trailer-section h2 { margin: 0 0 16px; font-size: 26px; }
+.trailer-toggle { padding: 12px 18px; border: 1px solid #ff9d20; border-radius: 8px; color: #101216; background: #ff9d20; font: inherit; font-weight: 700; cursor: pointer; }
+.trailer-toggle.secondary { margin-top: 14px; color: #ffbd70; background: transparent; }
+.trailer-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.trailer-frame { width: 100%; aspect-ratio: 16 / 9; min-height: 200px; overflow: hidden; border-radius: 14px; background: #171e29; }
+.trailer-frame iframe { width: 100%; height: 100%; border: 0; }
 @media (max-width: 600px) { .movie-summary { grid-template-columns: 1fr; }.movie-summary img { width: 160px; height: 230px; } }

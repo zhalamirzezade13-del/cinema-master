@@ -22,6 +22,7 @@
         </article>
       </div>
       <footer class="cart-total"><span>{{'cart.total' | transloco }}</span><strong>{{ cart.total() }} ₼</strong></footer>
+      <a routerLink="/payment" class="browse-movies">{{ 'payment.checkout' | transloco }}</a>
     </ng-container>
 
     <ng-template #emptyCart>

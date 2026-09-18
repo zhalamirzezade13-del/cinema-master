@@ -1,0 +1,18 @@
+<section class="activity-panel">
+  <header><div><h2>{{ 'activity.title' | transloco }}</h2><p>{{ 'activity.description' | transloco }}</p></div><button type="button" (click)="load()" [disabled]="loading">{{ 'admin.refresh' | transloco }}</button></header>
+  <div class="filters">
+    <label>{{ 'admin.search' | transloco }}<input type="search" [(ngModel)]="search" [placeholder]="'activity.search' | transloco"></label>
+    <label>{{ 'admin.filter' | transloco }}<select [(ngModel)]="kind"><option value="all">{{ 'admin.all' | transloco }}</option><option *ngFor="let type of kinds" [value]="type">{{ ('activity.' + type) | transloco }}</option></select></label>
+  </div>
+  <p *ngIf="loading" role="status">{{ 'admin.loading' | transloco }}</p>
+  <p *ngFor="let failure of failures" class="error" role="alert">{{ ('activity.' + failure.kind) | transloco }}: {{ failure.message | transloco }}</p>
+  <p *ngIf="!loading && !failures.length && !filtered.length">{{ 'activity.empty' | transloco }}</p>
+  <article *ngFor="let item of filtered">
+    <header><strong>{{ item.name || item.email || item.userId || ('activity.unknownUser' | transloco) }}</strong><span class="badge">{{ ('activity.' + item.kind) | transloco }}</span></header>
+    <p *ngIf="item.demo" class="badge">{{ 'payment.demo' | transloco }}</p>
+    <p *ngIf="item.email">{{ item.email }}</p>
+    <small *ngIf="item.userId">ID: {{ item.userId }}</small>
+    <p class="detail" *ngIf="item.detail">{{ item.detail }}</p>
+    <p>{{ item.time ? (item.time | date:'dd.MM.yyyy HH:mm') : ('activity.unknownDate' | transloco) }}</p>
+  </article>
+</section>

@@ -13,7 +13,10 @@ service cloud.firestore {
 
     match /movies/{movieId} {
       allow read: if true;
-      allow create, update, delete: if isAdmin();
+      allow create: if isAdmin() && !request.resource.data.keys().hasAny(['rating']);
+      allow update: if isAdmin() &&
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['rating']);
+      allow delete: if isAdmin();
     }
 
     function isValidNewUser() {
@@ -27,7 +30,11 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
       allow create: if isSignedIn() && request.auth.uid == userId && isValidNewUser();
-      allow update, delete: if false;
+      allow update: if isSignedIn() && request.auth.uid == userId &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name']) &&
+        request.resource.data.name is string && request.resource.data.name.size() > 0 &&
+        request.resource.data.name.size() <= 100;
+      allow delete: if false;
     }
 
     // Admin forms write only these fields; role documents remain read-only.
@@ -63,7 +70,7 @@ service cloud.firestore {
     }
 
     match /bookings/{bookingId} {
-      allow read: if isAdmin();
+      allow read: if isAdmin() || (isSignedIn() && resource.data.get('userId', '') == request.auth.uid);
     }
 
     // Admin replies preserve all original comment/message fields and ownership.
@@ -103,6 +110,7 @@ service cloud.firestore {
       allow read: if resource.data.status == 'approved' || isAdmin();
       allow create: if validVisitorComment();
       allow update: if isAdmin() && isValidAdminReply();
+      allow delete: if isAdmin();
     }
 
     match /messages/{messageId} {

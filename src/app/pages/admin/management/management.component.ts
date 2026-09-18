@@ -1,3 +1,4 @@
+import { DemoPaymentService } from '../../../core/demo-payment.service';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, DestroyRef, ElementRef, ViewChild, inject } from '@angular/core';
@@ -18,13 +19,17 @@ type Field = { key: string; label: string; type: string; min?: number; options?:
 })
 export class ManagementComponent {
   private readonly i18n = inject(TranslocoService);
+  private readonly payments = inject(DemoPaymentService);
   private readonly data = inject(AdminDataService);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly cdr = inject(ChangeDetectorRef);
   @ViewChild('editor', { static: true }) editor!: ElementRef<HTMLDialogElement>;
   @ViewChild('detailsDialog', { static: true }) detailsDialog!: ElementRef<HTMLDialogElement>;
+  @ViewChild('deleteDialog', { static: true }) deleteDialog!: ElementRef<HTMLDialogElement>;
   selected: AdminRecord | null = null;
+  pendingDelete: AdminRecord | null = null;
+  deleteError = '';
   replyText = '';
   replyError = '';
   replyNotice = '';
@@ -214,6 +219,7 @@ export class ManagementComponent {
     try {
       if (this.supportsDemo && this.demoMode) {
         this.records = demoRecords(this.section as DemoSection);
+        if (section === 'bookings') this.records = [...this.payments.list(), ...this.records];
         if (this.canReply) {
           try {
             const replies = JSON.parse(localStorage.getItem(this.demoReplyKey) ?? '{}');
@@ -339,5 +345,38 @@ export class ManagementComponent {
       }
     } catch (error) { if (request === this.request) this.error = adminError(error); }
     finally { this.saving = false; this.cdr.markForCheck(); }
+  }
+
+  askDeleteComment(record: AdminRecord): void {
+    if (this.section !== 'comments' || this.demoMode || this.saving) return;
+    this.pendingDelete = record;
+    this.deleteError = '';
+    this.deleteDialog.nativeElement.showModal();
+  }
+
+  async deleteComment(): Promise<void> {
+    if (this.section !== 'comments' || this.demoMode || this.saving || !this.pendingDelete) return;
+    const id = this.pendingDelete.id;
+    const request = this.request;
+    this.saving = true;
+    this.deleteError = '';
+    try {
+      await this.data.remove('comments', id);
+      if (request === this.request) {
+        this.records = this.records.filter(record => record.id !== id);
+        if (this.selected?.id === id) {
+          this.selected = null;
+          this.detailsDialog.nativeElement.close();
+        }
+        this.pendingDelete = null;
+        this.deleteDialog.nativeElement.close();
+        this.notice = 'admin.commentDeleted';
+      }
+    } catch (error) {
+      if (request === this.request) this.deleteError = adminError(error);
+    } finally {
+      this.saving = false;
+      this.cdr.markForCheck();
+    }
   }
 }

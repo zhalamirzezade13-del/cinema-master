@@ -6,7 +6,7 @@
       <p class="eyebrow">NOW SELECTING</p>
       <h1>{{ movie.title }}</h1>
       <p class="genre">{{ movie.genre }}</p>
-      <div class="facts"><span>★ {{ movie.rating }}</span><span>{{ movie.duration }}</span><span>2D · English</span></div>
+      <div class="facts"><span>★ {{ movie.rating || '—' }}</span><span>{{ movie.duration }}</span><span>2D · English</span></div>
       <section class="about-film" aria-labelledby="about-film-title">
         <p class="section-label" id="about-film-title">ABOUT THIS FILM</p>
         <p class="description">{{ movie.description }}</p>
@@ -14,6 +14,14 @@
       <p class="screening-note">This screening is available in Hall {{ hallId }}. Select an available seat below.</p>
     </div>
   </section>
+  <section *ngIf="trailerEmbedUrl" class="trailer-section" aria-labelledby="trailer-title">
+    <h2 id="trailer-title">{{ 'movieDetail.trailer' | transloco }}</h2>
+    <button *ngIf="!trailerOpen" type="button" class="trailer-toggle" (click)="trailerOpen = true">▶ {{ 'movieDetail.playTrailer' | transloco }}</button>
+    <div *ngIf="trailerOpen" class="trailer-frame">
+      <iframe [src]="trailerEmbedUrl" [title]="movie.title + ' — ' + ('movieDetail.trailer' | transloco)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <button *ngIf="trailerOpen" type="button" class="trailer-toggle secondary" (click)="trailerOpen = false">{{ 'movieDetail.closeTrailer' | transloco }}</button>
+  </section>
   <app-theatre [embedded]="true" [hallId]="hallId" [movieTitle]="movie.title"></app-theatre>
-  <app-movie-feedback [movieId]="movieId" [movieTitle]="movie.title"></app-movie-feedback>
+  <app-movie-feedback [movieId]="movieId" [movieTitle]="movie.title" (ratingChanged)="updateRating($event)"></app-movie-feedback>
 </main>

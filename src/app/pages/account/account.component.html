@@ -6,6 +6,33 @@
     <p *ngIf="profileError" class="error" role="alert">{{ 'account.profileError' | transloco }}</p>
   </section>
   <nav class="shortcuts" [attr.aria-label]="'account.links' | transloco"><a routerLink="/favorites">{{ 'nav.favorites' | transloco }}</a><a routerLink="/cart">{{ 'nav.basket' | transloco }}</a><a routerLink="/movies">{{ 'nav.movies' | transloco }}</a></nav>
+  <section class="inbox">
+    <h2>{{ 'settings.usernameTitle' | transloco }}</h2>
+    <form #nameForm="ngForm" (ngSubmit)="nameForm.valid && saveUsername()">
+      <label>{{ 'settings.username' | transloco }}<input name="username" [(ngModel)]="username" required maxlength="100" pattern=".*\S.*" autocomplete="username"></label>
+      <button type="submit" [disabled]="nameBusy || nameForm.invalid">{{ 'settings.save' | transloco }}</button>
+      <p *ngIf="nameStatus" role="status">{{ nameStatus | transloco }}</p>
+    </form>
+    <h2>{{ 'settings.passwordTitle' | transloco }}</h2>
+    <form #passwordForm="ngForm" (ngSubmit)="passwordForm.valid && savePassword()">
+      <label>{{ 'settings.currentPassword' | transloco }}<input type="password" name="currentPassword" [(ngModel)]="currentPassword" required autocomplete="current-password"></label>
+      <label>{{ 'settings.newPassword' | transloco }}<input type="password" name="newPassword" [(ngModel)]="newPassword" required minlength="6" autocomplete="new-password"></label>
+      <label>{{ 'settings.confirmPassword' | transloco }}<input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" required minlength="6" autocomplete="new-password"></label>
+      <p>{{ 'settings.passwordNote' | transloco }}</p>
+      <button type="submit" [disabled]="passwordBusy || passwordForm.invalid">{{ 'settings.save' | transloco }}</button>
+      <p *ngIf="passwordStatus" role="status">{{ passwordStatus | transloco }}</p>
+    </form>
+  </section>
+  <section class="inbox" aria-labelledby="email-title">
+    <h2 id="email-title">{{ 'settings.emailTitle' | transloco }}</h2>
+    <form #emailForm="ngForm" (ngSubmit)="emailForm.valid && saveEmail()">
+      <label>{{ 'settings.newEmail' | transloco }}<input type="email" name="newEmail" [(ngModel)]="newEmail" required email autocomplete="email" [disabled]="emailBusy"></label>
+      <label>{{ 'settings.currentPassword' | transloco }}<input type="password" name="emailPassword" [(ngModel)]="emailPassword" required autocomplete="current-password" [disabled]="emailBusy"></label>
+      <p>{{ 'settings.emailNote' | transloco }}</p>
+      <button type="submit" [disabled]="emailBusy || emailForm.invalid">{{ (emailBusy ? 'settings.emailSending' : 'settings.sendEmailVerification') | transloco }}</button>
+      <p *ngIf="emailStatus" role="status">{{ emailStatus | transloco }}</p>
+    </form>
+  </section>
   <section class="inbox" aria-labelledby="messages-title">
     <h2 id="messages-title">{{ 'account.messages' | transloco }}</h2>
     <p>{{ 'account.messagesNote' | transloco }}</p>

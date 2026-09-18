@@ -1,4 +1,5 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { ToastService } from './toast.service';
+import { Injectable, inject, computed, signal } from '@angular/core';
 
 export type CartTicket = {
   id: string;
@@ -11,6 +12,7 @@ export type CartTicket = {
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
+  private readonly toast = inject(ToastService);
   private readonly storageKey = 'cinema-cart';
   readonly tickets = signal<CartTicket[]>(this.readTickets());
   readonly total = computed(() => this.tickets().reduce((sum, ticket) => sum + ticket.price, 0));
@@ -25,13 +27,20 @@ export class CartService {
   }
 
   add(ticket: Omit<CartTicket, 'id'>): boolean {
-    if (this.has(ticket)) return false;
+    if (this.has(ticket)) { this.toast.show('theatre.duplicateTicket', 'info'); return false; }
     this.update([...this.tickets(), { ...ticket, id: crypto.randomUUID() }]);
+    this.toast.show('toast.cartAdded');
     return true;
   }
 
   remove(id: string): void {
+    if (!this.tickets().some(ticket => ticket.id === id)) return;
     this.update(this.tickets().filter(ticket => ticket.id !== id));
+    this.toast.show('toast.cartRemoved', 'info');
+  }
+
+  completePurchase(ids: string[]): void {
+    this.update(this.tickets().filter(ticket => !ids.includes(ticket.id)));
   }
 
   private update(tickets: CartTicket[]): void {

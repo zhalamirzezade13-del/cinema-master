@@ -134,6 +134,12 @@
   transform: translateY(-2px);
 }
 
+.hero-trailer-dialog { position: fixed; inset: 0; margin: auto; width: min(920px, calc(100vw - 32px)); max-width: none; padding: 18px; border: 1px solid #455061; border-radius: 16px; background: #10151e; color: #fff; }
+.hero-trailer-dialog::backdrop { background: #000c; }
+.trailer-close { display: block; margin: 0 0 12px auto; padding: 4px 12px; border: 0; color: #fff; background: transparent; font-size: 28px; cursor: pointer; }
+.hero-trailer-frame { aspect-ratio: 16 / 9; min-height: 200px; }
+.hero-trailer-frame iframe { width: 100%; height: 100%; border: 0; }
+
 @media (max-width: 640px) {
   .hero { min-height: 600px; align-items: end; padding-bottom: 46px; }
   .hero-background { object-position: 60% center; }

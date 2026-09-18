@@ -40,6 +40,7 @@ export interface Movie {
   genre: string;
   duration: string;
   description?: string;
+  trailerUrl?: string;
   releaseDate: string;
   status: 'now_playing' | 'upcoming';
 }

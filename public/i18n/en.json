@@ -1,4 +1,47 @@
 {
+  "payment": {
+    "demo": "Demo payment",
+    "title": "Complete your booking",
+    "demoNote": "This is a test payment. No real money is charged. The booking is saved only in this browser.",
+    "testCard": "Test card: 4242 4242 4242 4242. Enter a future expiry date and a 3-digit CVV (e.g. 123).",
+    "holder": "Cardholder name",
+    "card": "Card number",
+    "expiry": "Expiry date",
+    "previousYear": "Previous year",
+    "nextYear": "Next year",
+    "pay": "Pay in demo mode:",
+    "checkout": "Proceed to checkout",
+    "success": "Demo payment completed successfully.",
+    "saved": "Booking saved. The full card number and CVV are not stored.",
+    "receipt": "Booking ID",
+    "empty": "There are no tickets to pay for. Please select tickets again.",
+    "signIn": "Sign in to complete payment.",
+    "invalidCard": "Enter the test card, cardholder name, a future expiry date and a 3-digit CVV.",
+    "saveError": "Booking was not saved. Check browser storage access and try again.",
+    "readError": "Could not read saved demo bookings.",
+    "cartCleanup": "Payment was saved, but the purchased tickets could not be removed from the cart."
+  },
+  "toast": {
+    "close": "Dismiss notification",
+    "loginSuccess": "You are signed in.",
+    "registerSuccess": "Your account has been created.",
+    "cartAdded": "Ticket added to your cart.",
+    "cartRemoved": "Ticket removed from your cart.",
+    "favoriteAdded": "Movie added to favorites.",
+    "favoriteRemoved": "Movie removed from favorites."
+  },
+  "activity": {
+    "title": "User activity",
+    "description": "Registrations, comments, messages and bookings saved to the database — newest first. Use Refresh to update the list.",
+    "search": "Name, email, user ID or text",
+    "users": "Registered",
+    "comments": "Posted a comment",
+    "messages": "Sent a message",
+    "bookings": "Created a booking",
+    "empty": "No activity to display.",
+    "unknownUser": "Unknown user",
+    "unknownDate": "Date not recorded"
+  },
   "account": {
     "title": "My account",
     "description": "Your profile and conversations with the cinema.",
@@ -90,7 +133,16 @@
     "email": "Email",
     "password": "Password",
     "button": "Login",
-    "error": "Email or password is incorrect."
+    "error": "Email or password is incorrect.",
+    "or": "or",
+    "google": "Continue with Google",
+    "facebook": "Continue with Facebook",
+    "socialError": "Social sign-in failed. Check the provider settings and your connection.",
+    "socialAccountExists": "This email uses another sign-in method. Sign in with that method first.",
+    "socialProviderDisabled": "This sign-in provider is not enabled in Firebase Authentication.",
+    "socialUnauthorizedDomain": "This site's domain is not on the Firebase Authentication authorized domains list.",
+    "socialPopupBlocked": "The browser blocked the sign-in window. Allow pop-ups for this site.",
+    "socialNetworkError": "A network error occurred during sign-in. Check your connection."
   },
   "home": {
     "NowShowing": "Now Showing",
@@ -142,6 +194,9 @@
     "selected": "Selected",
     "occupied": "Occupied",
     "screen": "SCREEN",
+    "vipView": "VIP hall view",
+    "stageView": "View the screen",
+    "viewFromSeat": "View from seat",
     "manat": "manat"
   },
   "hero": {
@@ -154,6 +209,11 @@
     "releaseDate": "December 20, 2026",
     "bookTickets": "Book Tickets",
     "watch": "Watch Trailer"
+  },
+  "movieDetail": {
+    "trailer": "Movie trailer",
+    "playTrailer": "Play trailer here",
+    "closeTrailer": "Close trailer"
   },
   "admin": {
     "writeReply": "Write reply",
@@ -203,6 +263,8 @@
     "newMovie": "New movie",
     "name": "Name",
     "poster": "Poster URL",
+    "trailerUrl": "YouTube trailer link (optional)",
+    "trailerValidation": "Enter a valid YouTube trailer link.",
     "rating": "Rating",
     "genre": "Genre",
     "duration": "Duration",
@@ -252,6 +314,9 @@
     "movieValidation": "Complete required fields. The rating must be between 0 and 10.",
     "movieSaved": "Movie saved.",
     "movieDeleted": "Movie deleted.",
+    "deleteCommentTitle": "Delete this comment?",
+    "deleteCommentText": "This comment will be permanently deleted.",
+    "commentDeleted": "Comment deleted.",
     "requiredFields": "Complete all fields with valid values.",
     "capacityValidation": "Seating capacity must be a whole number.",
     "sessionValidation": "Select an existing film, hall and a valid date.",
@@ -313,5 +378,47 @@
     "commentsHint": "Saved audience reviews appear here with film, author and rating details.",
     "profileNote": "This page displays profile information.",
     "timezone": "Screening times use the cinema’s local time."
+  },
+  "settings": {
+    "emailTitle": "Change email",
+    "newEmail": "New email",
+    "emailNote": "A verification link will be sent to your new email. After confirming it, sign in again with your new email.",
+    "sendEmailVerification": "Send verification link",
+    "emailSending": "Sending…",
+    "emailSent": "Verification link sent to your new email. Check your inbox and spam folder. Confirm the link, then sign in again with your new email.",
+    "emailSame": "Enter an email different from your current email.",
+    "emailInvalid": "Enter a valid email address.",
+    "emailUsed": "This email is already in use.",
+    "emailPasswordError": "Your current password is incorrect.",
+    "emailTooManyRequests": "Too many attempts. Please try again later.",
+    "emailError": "Could not send the verification link. Check your connection and try again.",
+    "forgot": "Forgot your password?",
+    "resetNote": "Enter your email to receive a link to change your password.",
+    "sendReset": "Send reset link",
+    "resetSent": "If an account exists for this email, a reset link has been sent. Check your spam folder too.",
+    "resetError": "Could not send the reset link. Check your email and connection and try again.",
+    "usernameTitle": "Change username",
+    "username": "Username",
+    "passwordTitle": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "passwordNote": "Use at least 6 characters.",
+    "save": "Save",
+    "saved": "Changes saved.",
+    "saveError": "Could not save username. Please try again.",
+    "passwordError": "Could not change password. Check your current password and connection.",
+    "mismatch": "New passwords do not match."
+  },
+  "history": {
+    "title": "History",
+    "description": "Your previously purchased movies and tickets.",
+    "empty": "No purchased movies yet.",
+    "error": "Could not load history. Please try again.",
+    "paid": "Paid",
+    "hall": "Hall",
+    "row": "Row",
+    "seat": "Seat",
+    "total": "Amount"
   }
 }

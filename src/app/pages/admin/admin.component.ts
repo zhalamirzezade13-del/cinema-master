@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { AdminDataService, adminError } from './admin-data.service';
 import { Movie } from '../../shared/movie-card/movie-card.component';
+import { youtubeVideoId } from '../../core/youtube';
 
 @Component({
   selector: 'app-admin',
@@ -38,7 +39,7 @@ export class AdminComponent implements OnInit {
 
   get pageTitle(): string {
     const page = this.router.url.split('?')[0].split('/')[2] ?? '';
-    return ({ movies: 'admin.movies', bookings: 'admin.bookings', comments: 'admin.comments', halls: 'admin.hallsSessions', messages: 'admin.messages', users: 'admin.users' } as Record<string, string>)[page] ?? 'admin.dashboard';
+    return ({ history: 'activity.title', movies: 'admin.movies', bookings: 'admin.bookings', comments: 'admin.comments', halls: 'admin.hallsSessions', messages: 'admin.messages', users: 'admin.users' } as Record<string, string>)[page] ?? 'admin.dashboard';
   }
 
   showForm = false;
@@ -51,6 +52,7 @@ export class AdminComponent implements OnInit {
     genre: '',
     duration: '',
     description: '',
+    trailerUrl: '',
     releaseDate: '',
     status: 'now_playing'
   };
@@ -118,6 +120,7 @@ export class AdminComponent implements OnInit {
       genre: '',
       duration: '',
       description: '',
+      trailerUrl: '',
       releaseDate: '',
       status: 'now_playing'
     };
@@ -152,19 +155,24 @@ export class AdminComponent implements OnInit {
     this.error = '';
     const movieData = {
       title: this.form.title.trim(), poster: this.form.poster.trim(),
-      rating: Number(this.form.rating), genre: this.form.genre.trim(),
+      genre: this.form.genre.trim(),
       duration: this.form.duration.trim(), description: this.form.description ?? '',
+      trailerUrl: this.form.trailerUrl?.trim() ?? '',
       releaseDate: this.form.releaseDate ?? '', status: this.form.status
     };
     if (!movieData.title || !movieData.poster || !movieData.genre || !movieData.duration ||
-        !movieData.releaseDate || !Number.isFinite(movieData.rating) || movieData.rating < 0 || movieData.rating > 10) {
+        !movieData.releaseDate) {
       this.error = 'admin.movieValidation';
+      return;
+    }
+    if (movieData.trailerUrl && !youtubeVideoId(movieData.trailerUrl)) {
+      this.error = 'admin.trailerValidation';
       return;
     }
     this.saving = true;
     try {
       const id = await this.data.save('movies', this.editingMovieId, movieData);
-      const saved = { ...movieData, id };
+      const saved: Movie = { ...movieData, id, rating: this.editingMovieId ? this.form.rating : 0 };
       this.movies = this.editingMovieId
         ? this.movies.map(movie => movie.id === id ? saved : movie)
         : [...this.movies, saved];

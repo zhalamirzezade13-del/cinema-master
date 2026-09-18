@@ -37,3 +37,69 @@ h1 { margin: 8px 0; font-size: clamp(32px, 5vw, 48px); }
 
 @media (max-width: 800px) { .hall-list { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 620px) { .theatre-page { padding-top: 34px; }.theatre-heading { flex-direction: column; }.selected-seat { width: 100%; align-items: stretch; flex-direction: column; }.book-ticket { width: 100%; }.seat-map { margin-inline: -8px; border-radius: 14px; }.legend { justify-content: flex-start; gap: 14px; }.hall-list { grid-template-columns: 1fr; }.map-title { flex-direction: column; } }
+
+/* Each room keeps its own seat count, aisles, proportions and interior. */
+.seat-map {
+  --seat-size: 29px;
+  --seat-gap: 4px;
+  --aisle-width: 34px;
+  --seat-blue: #30478f;
+  --seat-pink: #e93688;
+  --seat-green: #2d7747;
+  color: #1f2937;
+  border-color: #cbd0da;
+  background: #f7f8fb;
+}
+.map-title { color: #263346; }
+.map-title strong { color: #9a570c; }
+.legend { flex-wrap: wrap; gap: 12px 24px; color: #445269; }
+.legend i { border-radius: 5px 5px 2px 2px; background: var(--seat-blue); }
+.legend i.middle-tier { background: var(--seat-pink); }
+.legend i.front-tier { background: var(--seat-green); }
+.legend i.selected { background: #ffad28; }
+.legend i.occupied { background: #aab0bc; }
+.auditorium { min-width: max-content; overflow: hidden; border: 1px solid #c9cdd3; border-radius: 15px; background: #e8e9ed; box-shadow: inset 0 0 0 8px #dfe1e5; }
+.front-wall { position: relative; height: 172px; padding-top: 26px; border-bottom: 18px solid #aeb2b9; background: linear-gradient(90deg, #ced1d6 0 8%, transparent 8% 92%, #ced1d6 92%), linear-gradient(#f7f8fa, #e2e4e7 68%, #c5c8cd); box-shadow: inset 0 -24px 22px -20px #464b54; }
+.front-wall::before, .front-wall::after { position: absolute; top: 0; bottom: -18px; width: 7%; content: ''; background: repeating-linear-gradient(170deg, transparent 0 28px, #acb1b8 29px 30px), linear-gradient(90deg, #d5d8dc, #f4f5f6); }
+.front-wall::before { left: 0; border-right: 3px solid #969aa1; }
+.front-wall::after { right: 0; border-left: 3px solid #969aa1; transform: scaleX(-1); }
+.screen { width: 72%; min-width: 0; height: 92px; margin: auto; padding: 63px 0 0; color: #555e6b; font-size: 12px; letter-spacing: 5px; border: 2px solid #bfc4cb; border-bottom: 5px solid #5c626b; border-radius: 0; background: linear-gradient(#fff, #eef0f3); box-shadow: 0 11px 18px #4a4e5660; }
+.stage-ledge { position: absolute; z-index: 1; right: 7%; bottom: -16px; left: 7%; height: 18px; background: repeating-linear-gradient(90deg, #969a9e 0 10%, #73777b 10% 11%, #c4c6c8 11% 12%); }
+.auditorium-floor { position: relative; min-height: 440px; padding: 46px 42px 55px; background: repeating-linear-gradient(0deg, #f9fafc 0 28px, #e7e9ed 29px 51px); }
+.auditorium-floor::before, .auditorium-floor::after { position: absolute; top: 0; bottom: 0; width: 28px; content: ''; background: linear-gradient(90deg, #afb3ba, #e7e9ed); box-shadow: 2px 0 4px #7d828950; }
+.auditorium-floor::before { left: 0; }
+.auditorium-floor::after { right: 0; transform: scaleX(-1); }
+.rows { display: grid; gap: 8px; width: max-content; min-width: 0; margin: auto; }
+.seat-row { display: flex; align-items: center; justify-content: center; }
+.seat-block { display: grid; gap: var(--seat-gap); }
+.aisle { width: var(--aisle-width); align-self: stretch; background: linear-gradient(90deg, transparent 45%, #bbc0c96b 50%, transparent 55%); }
+.row-number { flex: 0 0 25px; width: auto; margin-right: 8px; color: #525d70; font-weight: 700; }
+.row-number.right { margin: 0 0 0 8px; }
+.seat { width: var(--seat-size); height: var(--seat-size); color: #fff; font-size: 10px; font-weight: 700; border: 1px solid #fff; border-radius: 9px 9px 3px 3px; background: var(--seat-blue); box-shadow: inset 0 -4px #17295b80, 0 1px 2px #343b4b40; }
+.seat.middle-tier { background: var(--seat-pink); box-shadow: inset 0 -4px #9e175880, 0 1px 2px #343b4b40; }
+.seat.front-tier { background: var(--seat-green); box-shadow: inset 0 -4px #18502a80, 0 1px 2px #343b4b40; }
+.seat:hover:not(:disabled) { filter: brightness(1.22); transform: translateY(-3px); }
+.seat:focus-visible { outline: 3px solid #111827; outline-offset: 2px; }
+.seat.selected, .seat.selected.middle-tier, .seat.selected.front-tier { color: #251504; background: #ffad28; box-shadow: inset 0 -4px #bd7309, 0 0 0 2px #fff; }
+.seat.occupied, .seat.occupied.middle-tier, .seat.occupied.front-tier { cursor: not-allowed; color: #5b6471; opacity: 1; background: #aab0bc; box-shadow: inset 0 -4px #7e8794; }
+.layout-standard { --seat-blue: #305a83; --seat-pink: #3b84a1; --seat-green: #247a80; --aisle-width: 62px; }
+.layout-standard .front-wall { height: 145px; background: linear-gradient(#dce8ed, #b5c8d2); }
+.layout-standard .screen { width: 80%; height: 72px; padding-top: 47px; }
+.layout-standard .auditorium-floor { background: repeating-linear-gradient(0deg, #f2f7f8 0 28px, #dce9ec 29px 51px); }
+.layout-vip { --seat-size: 39px; --seat-gap: 8px; --aisle-width: 38px; --seat-blue: #75562f; --seat-pink: #9c6c34; --seat-green: #bd873e; }
+.layout-vip .front-wall { height: 154px; border-bottom-color: #8e765a; background: linear-gradient(#342f35, #746353); }
+.layout-vip .screen { width: 68%; height: 79px; padding-top: 52px; border-color: #a58b61; background: linear-gradient(#fffdf4, #e2d6bd); }
+.layout-vip .auditorium-floor { background: repeating-linear-gradient(0deg, #e9e2d8 0 42px, #d3c8b8 43px 64px); }
+.layout-vip .seat { border-radius: 12px 12px 5px 5px; font-size: 11px; }
+.layout-vip .rows { gap: 13px; }
+.layout-family { --seat-size: 31px; --seat-gap: 5px; --aisle-width: 46px; --seat-blue: #6474bd; --seat-pink: #dd739d; --seat-green: #5d9c74; }
+.layout-family .front-wall { height: 145px; background: linear-gradient(#fff2e9, #ebc9bd); }
+.layout-family .screen { width: 74%; height: 75px; padding-top: 48px; border-color: #d6a99d; background: linear-gradient(#fff, #fff1eb); }
+.layout-family .auditorium-floor { background: repeating-linear-gradient(0deg, #fff9f5 0 30px, #f4e4dc 31px 53px); }
+.layout-family .rows { gap: 10px; }
+
+.vip-view-controls { display: flex; justify-content: flex-end; gap: 8px; margin: -4px 0 16px; }
+.vip-view-controls button { padding: 9px 15px; color: #453525; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid #cabda9; border-radius: 999px; background: #fffaf0; }
+.vip-view-controls button:hover:not(:disabled), .vip-view-controls button.active { color: #fff; border-color: #775331; background: #775331; }
+.vip-view-controls button:disabled { cursor: not-allowed; opacity: .45; }
+@media (max-width: 620px) { .vip-view-controls { justify-content: flex-start; flex-wrap: wrap; } }

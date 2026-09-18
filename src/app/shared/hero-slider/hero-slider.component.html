@@ -31,13 +31,14 @@
 
         <div class="buttons">
             <button class="book-btn" [routerLink]="['/movies']">{{ 'hero.bookTickets' | transloco }}</button>
-            <a
-              class="watch-btn"
-              href="https://www.youtube.com/watch?v=kpm2k0S3UuY"
-              target="_blank"
-              rel="noopener noreferrer"
-            >{{ 'hero.watch' | transloco }}</a>
+            <button type="button" class="watch-btn" (click)="openTrailer()">{{ 'hero.watch' | transloco }}</button>
         </div>
 
     </div>
 </section>
+<dialog #trailerDialog class="hero-trailer-dialog" [attr.aria-label]="'hero.watch' | transloco" (close)="trailerOpen = false">
+  <button type="button" class="trailer-close" (click)="closeTrailer()" [attr.aria-label]="'movieDetail.closeTrailer' | transloco">×</button>
+  <div class="hero-trailer-frame">
+    <iframe *ngIf="trailerOpen" src="https://www.youtube-nocookie.com/embed/y35F2nMfVwY" [title]="'hero.watch' | transloco" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+</dialog>

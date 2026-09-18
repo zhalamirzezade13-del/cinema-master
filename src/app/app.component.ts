@@ -1,3 +1,4 @@
+import { ToastComponent } from './shared/toast/toast.component';
 import { Component, signal } from '@angular/core';
 import {
   NavigationEnd,
@@ -18,12 +19,14 @@ import { CommonModule } from '@angular/common';
   imports: [
     RouterOutlet,
     NavbarComponent,
+    ToastComponent,
     CommonModule
   ],
 })
 export class AppComponent {
 
   readonly isAdminArea = signal(false);
+  readonly isAuthPage = signal(false);
 
   constructor(
     public readonly auth: AuthService,
@@ -43,6 +46,8 @@ export class AppComponent {
   }
 
   private updateAdminArea(): void {
+    const path = this.router.url.split(/[?#]/)[0];
+    this.isAuthPage.set(path === '/login' || path === '/register');
     this.isAdminArea.set(
       this.router.url.startsWith('/admin')
     );

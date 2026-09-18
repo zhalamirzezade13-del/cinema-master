@@ -49,3 +49,4 @@ dialog .actions { justify-content: flex-end; margin-top: 20px; }
 .saved-reply { padding: 16px; border: 1px solid #3b5078; border-radius: 8px; background: #202b43; }
 .saved-reply p { white-space: pre-wrap; color: #ddd; }
 .reply-form small { color: #aaa; }
+.delete-preview { margin: 16px 0 0; padding: 12px 16px; border-left: 3px solid #ff4d4d; background: #242424; white-space: pre-wrap; overflow-wrap: anywhere; }

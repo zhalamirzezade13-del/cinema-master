@@ -1,12 +1,20 @@
 import { Injectable, signal } from '@angular/core';
 
 import {
+  EmailAuthProvider,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  reauthenticateWithCredential,
+  sendPasswordResetEmail,
+  updatePassword,
+  verifyBeforeUpdateEmail,
   browserSessionPersistence,
   createUserWithEmailAndPassword,
   updateProfile,
   onAuthStateChanged,
   setPersistence,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut
 } from 'firebase/auth';
 
@@ -88,6 +96,39 @@ export class AuthService {
     }
   }
 
+  async loginWithProvider(provider: 'google' | 'facebook'): Promise<void> {
+    await setPersistence(auth, browserSessionPersistence);
+    const authProvider = provider === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
+    if (provider === 'google') {
+      authProvider.setCustomParameters({ prompt: 'select_account' });
+    }
+    const credential = await signInWithPopup(
+      auth,
+      authProvider
+    );
+
+    this.isLoggedIn.set(true);
+    await this.loadUserRole(credential.user.uid);
+
+    // New social accounts need the same user document as email registrations.
+    // A failed profile write must not turn a successful Firebase sign-in into an error.
+    if (credential.user.email) {
+      try {
+        const userRef = doc(db, 'users', credential.user.uid);
+        if (!(await getDoc(userRef)).exists()) {
+          await setDoc(userRef, {
+            name: (credential.user.displayName?.trim() || credential.user.email).slice(0, 100),
+            email: credential.user.email,
+            role: 'user',
+            createdAt: serverTimestamp()
+          });
+        }
+      } catch (error) {
+        console.warn('Could not save social sign-in profile:', error);
+      }
+    }
+  }
+
   async register(name: string, email: string, password: string): Promise<boolean> {
     await setPersistence(auth, browserSessionPersistence);
     const { user } = await createUserWithEmailAndPassword(auth, email.trim(), password);
@@ -103,6 +144,57 @@ export class AuthService {
     } catch {
       return false;
     }
+  }
+
+  async resetPassword(email: string): Promise<void> {
+    await sendPasswordResetEmail(auth, email.trim());
+  }
+
+  async changeUsername(name: string): Promise<void> {
+    const user = auth.currentUser;
+    const normalizedName = name.trim();
+    if (!user || !normalizedName || normalizedName.length > 100) throw new Error('Invalid username');
+
+    await updateProfile(user, { displayName: normalizedName });
+
+    // Authentication owns the display name. Keep the Firestore profile in sync
+    // when available, but do not report a failed rename after Auth has succeeded.
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const profile = await getDoc(userRef);
+
+      if (profile.exists()) {
+        await setDoc(userRef, { name: normalizedName }, { merge: true });
+      } else {
+        await setDoc(userRef, {
+          name: normalizedName,
+          email: user.email ?? '',
+          role: 'user',
+          createdAt: serverTimestamp()
+        });
+      }
+    } catch (error) {
+      console.warn('Could not synchronize the username to Firestore:', error);
+    }
+  }
+
+  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    const user = auth.currentUser;
+    if (!user?.email) throw new Error('Sign in required');
+    await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, currentPassword));
+    await updatePassword(user, newPassword);
+  }
+
+  async changeEmail(currentPassword: string, newEmail: string): Promise<void> {
+    const user = auth.currentUser;
+    const normalizedEmail = newEmail.trim();
+    if (!user?.email) throw new Error('Sign in required');
+    if (!normalizedEmail) throw new Error('Invalid email');
+    if (normalizedEmail.toLowerCase() === user.email.toLowerCase()) {
+      throw { code: 'auth/same-email' };
+    }
+    await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, currentPassword));
+    await verifyBeforeUpdateEmail(user, normalizedEmail);
   }
 
   async logout(): Promise<void> {

@@ -18,6 +18,20 @@
       <p *ngIf="loginError" class="login-error" role="alert">{{'login.error' | transloco }}</p>
       <button type="submit">{{'login.button' | transloco }}</button>
     </form>
+    <div class="social-login">
+      <p class="social-divider">{{ 'login.or' | transloco }}</p>
+      <button type="button" class="social-button" [disabled]="socialBusy" (click)="loginWithProvider('google')">{{ 'login.google' | transloco }}</button>
+      <button type="button" class="social-button" [disabled]="socialBusy" (click)="loginWithProvider('facebook')">{{ 'login.facebook' | transloco }}</button>
+      <p *ngIf="socialError" class="login-error" role="alert">{{ socialError | transloco }}</p>
+      <small *ngIf="socialErrorCode" class="social-error-code">{{ socialErrorCode }}</small>
+    </div>
+    <button type="button" class="forgot-password" (click)="resetOpen = !resetOpen" [attr.aria-expanded]="resetOpen">{{ 'settings.forgot' | transloco }}</button>
+    <form *ngIf="resetOpen" #resetForm="ngForm" (ngSubmit)="resetForm.valid && resetPassword()">
+      <p>{{ 'settings.resetNote' | transloco }}</p>
+      <label>Email<input type="email" name="resetEmail" [(ngModel)]="resetEmail" email required autocomplete="email"></label>
+      <button type="submit" [disabled]="resetBusy || resetForm.invalid">{{ 'settings.sendReset' | transloco }}</button>
+      <p *ngIf="resetStatus" [class.login-error]="resetError" role="status">{{ resetStatus | transloco }}</p>
+    </form>
     <p class="auth-switch">{{ 'register.noAccount' | transloco }} <a routerLink="/register" [queryParams]="{ returnUrl: returnUrl }">{{ 'register.title' | transloco }}</a></p>
   </section>
 </main>

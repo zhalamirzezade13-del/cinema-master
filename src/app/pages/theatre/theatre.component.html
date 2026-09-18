@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <section class="seat-map" aria-label="Cinema seat map">
+  <section class="seat-map" [ngClass]="'layout-' + activeHall.layout" aria-label="Cinema seat map">
 
     <div class="map-title">
       <span>{{ activeHall.name }} · {{ activeHall.type }}</span>
@@ -71,7 +71,7 @@
 
     <div class="legend">
       <span>
-        <i class="available"></i>
+        <i class="available"></i><i class="middle-tier"></i><i class="front-tier"></i>
         {{'theatre.available' | transloco }}
       </span>
 
@@ -86,102 +86,53 @@
       </span>
     </div>
 
-    <div class="screen">SCREEN</div>
+    <div class="vip-view-controls" *ngIf="activeHall.layout === 'vip'" [attr.aria-label]="'theatre.vipView' | transloco">
+      <button type="button" [class.active]="vipView === '3d' || vipView === 'seat'" [attr.aria-pressed]="vipView === '3d' || vipView === 'seat'" (click)="showVipView('3d')">3D</button>
+      <button type="button" [class.active]="vipView === '2d'" [attr.aria-pressed]="vipView === '2d'" (click)="showVipView('2d')">2D</button>
+      <button type="button" [class.active]="vipView === 'stage'" [attr.aria-pressed]="vipView === 'stage'" [disabled]="!focusedSeat" (click)="showVipView('stage')">{{ 'theatre.stageView' | transloco }}</button>
+    </div>
 
-    <div class="rows">
+    @defer (when activeHall.layout === 'vip') {
+      <app-vip-theatre-view *ngIf="activeHall.layout === 'vip' && vipView !== '2d'"
+        [mode]="vipView === 'stage' ? 'stage' : vipView === 'seat' ? 'seat' : '3d'"
+        [focusedSeat]="focusedSeat" [selectedSeats]="selectedSeats" [occupiedSeats]="occupiedSeats"
+        (seatPicked)="selectSeat(getSeat($event.row, $event.number))"
+        (unavailable)="showVipView('2d')"></app-vip-theatre-view>
+    }
 
-      <div
-        class="seat-row"
-        *ngFor="let row of rows"
-      >
-
-        <span class="row-number">
-          {{ row }}
-        </span>
-
-        <!-- LEFT SEATS -->
-        <div class="seat-block">
-
-          <button
-            *ngFor="let number of leftSeats"
-            type="button"
-            class="seat"
-
-            [class.occupied]="
-              getSeat(row, number).status === 'occupied'
-            "
-
-            [class.selected]="
-              isSelected(row, number)
-            "
-
-            [attr.aria-label]="
-              'Row ' +
-              row +
-              ', seat ' +
-              number +
-              ', ' +
-              getSeat(row, number).price +
-              ' manat'
-            "
-
-            [disabled]="
-              getSeat(row, number).status === 'occupied'
-            "
-
-            (click)="selectSeat(getSeat(row, number))"
-          >
-            {{ number }}
-          </button>
-
-        </div>
-
-        <div class="aisle"></div>
-
-        <!-- RIGHT SEATS -->
-        <div class="seat-block">
-
-          <button
-            *ngFor="let number of rightSeats"
-            type="button"
-            class="seat"
-
-            [class.occupied]="
-              getSeat(row, number).status === 'occupied'
-            "
-
-            [class.selected]="
-              isSelected(row, number)
-            "
-
-            [attr.aria-label]="
-              'Row ' +
-              row +
-              ', seat ' +
-              number +
-              ', ' +
-              getSeat(row, number).price +
-              ' manat'
-            "
-
-            [disabled]="
-              getSeat(row, number).status === 'occupied'
-            "
-
-            (click)="selectSeat(getSeat(row, number))"
-          >
-            {{ number }}
-          </button>
-
-        </div>
-
-        <span class="row-number right">
-          {{ row }}
-        </span>
-
+    <div class="auditorium" *ngIf="activeHall.layout !== 'vip' || vipView === '2d'">
+      <div class="front-wall" aria-hidden="true">
+        <div class="screen">{{ 'theatre.screen' | transloco }}</div>
+        <div class="stage-ledge"></div>
       </div>
 
+      <div class="auditorium-floor">
+        <div class="rows">
+          <div class="seat-row" *ngFor="let row of activeHall.rows">
+            <span class="row-number">{{ row }}</span>
+            <ng-container *ngFor="let block of activeHall.blocks; let lastBlock = last">
+              <div class="seat-block" [style.grid-template-columns]="'repeat(' + block.length + ', var(--seat-size))'">
+                <button
+                  *ngFor="let number of block"
+                  type="button"
+                  class="seat"
+                  [class.front-tier]="row <= 2"
+                  [class.middle-tier]="row > 2 && row <= 6"
+                  [class.occupied]="getSeat(row, number).status === 'occupied'"
+                  [class.selected]="isSelected(row, number)"
+                  [attr.aria-label]="'Row ' + row + ', seat ' + number + ', ' + getSeat(row, number).price + ' manat'"
+                  [disabled]="getSeat(row, number).status === 'occupied'"
+                  (click)="selectSeat(getSeat(row, number))"
+                >{{ number }}</button>
+              </div>
+              <div class="aisle" *ngIf="!lastBlock" aria-hidden="true"></div>
+            </ng-container>
+            <span class="row-number right">{{ row }}</span>
+          </div>
+        </div>
+      </div>
     </div>
+
 
   </section>
 </main>

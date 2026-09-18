@@ -1,0 +1,11 @@
+<div class="toast-stack" aria-live="polite" aria-relevant="additions">
+  @for (message of toast.messages(); track message.id) {
+    <div class="toast" [class.error]="message.kind === 'error'" [class.info]="message.kind === 'info'"
+      (mouseenter)="toast.pause(message.id)" (mouseleave)="toast.resume(message.id)"
+      (focusin)="toast.pause(message.id)" (focusout)="toast.resume(message.id)">
+      <span class="icon" aria-hidden="true">{{ message.kind === 'success' ? '✓' : message.kind === 'error' ? '!' : 'i' }}</span>
+      <span class="message">{{ message.key | transloco }}</span>
+      <button type="button" (click)="toast.dismiss(message.id)" [attr.aria-label]="'toast.close' | transloco">×</button>
+    </div>
+  }
+</div>

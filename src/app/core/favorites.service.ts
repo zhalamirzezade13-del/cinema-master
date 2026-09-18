@@ -1,8 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { ToastService } from './toast.service';
+import { Injectable, inject, signal } from '@angular/core';
 import { Movie } from '../shared/movie-card/movie-card.component';
 
 @Injectable({ providedIn: 'root' })
 export class FavoritesService {
+  private readonly toast = inject(ToastService);
   private readonly storageKey = 'cinema-favorites';
   readonly movies = signal<Movie[]>(this.readMovies());
 
@@ -11,11 +13,13 @@ export class FavoritesService {
   }
 
   toggle(movie: Movie): void {
-    const movies = this.isFavorite(movie)
+    const removing = this.isFavorite(movie);
+    const movies = removing
       ? this.movies().filter(item => item.title !== movie.title)
       : [...this.movies(), movie];
     this.movies.set(movies);
     localStorage.setItem(this.storageKey, JSON.stringify(movies));
+    this.toast.show(removing ? 'toast.favoriteRemoved' : 'toast.favoriteAdded', removing ? 'info' : 'success');
   }
 
   private readMovies(): Movie[] {

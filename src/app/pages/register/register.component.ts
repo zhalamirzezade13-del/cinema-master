@@ -1,3 +1,4 @@
+import { ToastService } from '../../core/toast.service';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +13,7 @@ import { AuthService } from '../../core/auth.service';
   styleUrl: '../login/login.component.css'
 })
 export class RegisterComponent {
+  private readonly toast = inject(ToastService);
   private readonly auth = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -32,16 +34,16 @@ export class RegisterComponent {
     if (this.saving || this.created) return;
     this.error = '';
     if (!this.name.trim() || this.name.trim().length > 100 || !this.email.trim() || this.password.length < 6) {
-      this.error = 'register.validation'; return;
+      this.error = 'register.validation'; this.toast.show(this.error, 'error'); return;
     }
-    if (this.password !== this.confirmPassword) { this.error = 'register.mismatch'; return; }
+    if (this.password !== this.confirmPassword) { this.error = 'register.mismatch'; this.toast.show(this.error, 'error'); return; }
     this.saving = true;
     try {
       const profileSaved = await this.auth.register(this.name, this.email, this.password);
       this.created = true;
       this.password = '';
       this.confirmPassword = '';
-      if (profileSaved) await this.router.navigateByUrl(this.destination);
+      if (profileSaved) { this.toast.show('toast.registerSuccess'); await this.router.navigateByUrl(this.destination); }
       else this.error = 'register.profileIncomplete';
     } catch (error) {
       const code = (error as { code?: string })?.code;
@@ -51,6 +53,6 @@ export class RegisterComponent {
         'auth/network-request-failed': 'networkError', 'auth/too-many-requests': 'tooManyRequests'
       };
       this.error = 'register.' + (errors[code ?? ''] ?? 'error');
-    } finally { this.saving = false; this.cdr.markForCheck(); }
+    } finally { if (this.error) this.toast.show(this.error, 'error'); this.saving = false; this.cdr.markForCheck(); }
   }
 }

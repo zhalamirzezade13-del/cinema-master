@@ -1,31 +1,55 @@
 <main class="payment-page">
-  <a routerLink="/movies" class="back-link">← Continue browsing movies</a>
-
+  <a routerLink="/movies" class="back-link">← {{ 'cart.browseMovies' | transloco }}</a>
   <section class="payment-layout">
     <div class="payment-intro">
-      <p class="eyebrow">CHECKOUT</p>
-      <h1>Complete your booking</h1>
-      <p>Review your ticket details and enter your payment information.</p>
-
-      <form class="payment-form" (submit)="$event.preventDefault()">
-        <label>Cardholder name<input type="text" placeholder="Name on card" autocomplete="cc-name"></label>
-        <label>Card number<input type="text" inputmode="numeric" placeholder="1234 5678 9012 3456" autocomplete="cc-number"></label>
+      <p class="eyebrow">{{ 'payment.demo' | transloco }}</p>
+      <h1>{{ (paid ? 'payment.success' : 'payment.title') | transloco }}</h1>
+      <p>{{ 'payment.demoNote' | transloco }}</p>
+      <div *ngIf="paid" class="receipt" role="status">
+        <p>{{ 'payment.saved' | transloco }}</p>
+        <p>{{ 'payment.card' | transloco }}: •••• 4242</p>
+        <p *ngFor="let id of receiptIds">{{ 'payment.receipt' | transloco }}: {{ id }}</p>
+        <a routerLink="/cart" class="back-link">{{ 'nav.basket' | transloco }}</a>
+      </div>
+      <p *ngIf="!paid && !tickets.length" role="status">{{ 'payment.empty' | transloco }}</p>
+      <form *ngIf="!paid && tickets.length" class="payment-form" #paymentForm="ngForm" (ngSubmit)="paymentForm.valid && pay()" autocomplete="off">
+        <p>{{ 'payment.testCard' | transloco }}</p>
+        <label>{{ 'payment.holder' | transloco }}<input name="cardholder" [(ngModel)]="cardholder" required maxlength="100" pattern=".*\S.*" [disabled]="busy"></label>
+        <label>{{ 'payment.card' | transloco }}<input name="cardNumber" [(ngModel)]="cardNumber" required maxlength="19" inputmode="numeric" placeholder="4242 4242 4242 4242" [disabled]="busy"></label>
         <div class="card-details">
-          <label>Expiry date<input type="text" inputmode="numeric" placeholder="MM / YY" autocomplete="cc-exp"></label>
-          <label>CVV<input type="text" inputmode="numeric" placeholder="123" autocomplete="cc-csc"></label>
+          <div class="expiry-field" (keydown.escape)="expiryCalendarOpen = false; expiryToggle.focus()">
+            <label for="card-expiry">{{ 'payment.expiry' | transloco }}</label>
+            <div class="expiry-input">
+              <input id="card-expiry" name="expiry" [(ngModel)]="expiry" required maxlength="7" inputmode="numeric" placeholder="MM / YY" [disabled]="busy">
+              <button #expiryToggle type="button" class="expiry-toggle" [attr.aria-label]="'payment.expiry' | transloco" [attr.aria-expanded]="expiryCalendarOpen" aria-controls="expiry-calendar" [disabled]="busy" (click)="toggleExpiryCalendar()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18M7 15h3M14 15h3"/></svg>
+              </button>
+            </div>
+            <div *ngIf="expiryCalendarOpen" id="expiry-calendar" class="expiry-calendar" role="group" [attr.aria-label]="'payment.expiry' | transloco">
+              <div class="expiry-year">
+                <button type="button" [attr.aria-label]="'payment.previousYear' | transloco" [disabled]="busy || expiryYear <= currentYear" (click)="expiryYear = expiryYear - 1">‹</button>
+                <span aria-live="polite">{{ expiryYear }}</span>
+                <button type="button" [attr.aria-label]="'payment.nextYear' | transloco" [disabled]="busy || expiryYear >= 2099" (click)="expiryYear = expiryYear + 1">›</button>
+              </div>
+              <div class="expiry-months">
+                <button *ngFor="let month of expiryMonths" type="button" [attr.aria-label]="month + ' / ' + expiryYear" [attr.aria-pressed]="expiry.replaceAll(' ', '') === month + '/' + (expiryYear % 100)" [disabled]="busy || (expiryYear === currentYear && +month < currentMonth)" (click)="selectExpiryMonth(month); expiryToggle.focus()">{{ month }}</button>
+              </div>
+            </div>
+          </div>
+          <label>CVV<input name="cvv" type="password" [(ngModel)]="cvv" required pattern="[0-9]{3}" maxlength="3" inputmode="numeric" placeholder="123" [disabled]="busy"></label>
         </div>
-        <button type="submit">Pay {{ booking.price }} ₼</button>
+        <p *ngIf="error" class="error" role="alert">{{ error | transloco }}</p>
+        <button type="submit" [disabled]="busy || paymentForm.invalid">{{ 'payment.pay' | transloco }} {{ total }} ₼</button>
       </form>
     </div>
-
     <aside class="booking-summary">
-      <p class="summary-label">YOUR TICKET</p>
-      <h2>{{ booking.movie }}</h2>
-      <dl>
-        <div><dt>Hall</dt><dd>{{ booking.hall }}</dd></div>
-        <div><dt>Seat</dt><dd>Row {{ booking.row }}, Seat {{ booking.seat }}</dd></div>
-        <div class="total"><dt>Total</dt><dd>{{ booking.price }} ₼</dd></div>
-      </dl>
+      <p class="summary-label">{{ 'cart.yourTickets' | transloco }}</p>
+      <article *ngFor="let ticket of tickets">
+        <h2>{{ ticket.movie }}</h2>
+        <p>{{ ticket.hall }} · {{ 'cart.row' | transloco }} {{ ticket.row }}, {{ 'cart.seat' | transloco }} {{ ticket.seat }}</p>
+        <p>{{ ticket.price }} ₼</p>
+      </article>
+      <dl><div class="total"><dt>{{ 'cart.total' | transloco }}</dt><dd>{{ total }} ₼</dd></div></dl>
     </aside>
   </section>
 </main>

@@ -1,4 +1,47 @@
 {
+  "payment": {
+    "demo": "Demo ödəniş",
+    "title": "Sifarişi tamamla",
+    "demoNote": "Bu test ödənişidir, real pul tutulmur. Sifariş yalnız bu brauzerdə saxlanılır.",
+    "testCard": "Test kartı: 4242 4242 4242 4242. Gələcək bitmə tarixi və 3 rəqəmli CVV (məsələn, 123) daxil edin.",
+    "holder": "Kart sahibinin adı",
+    "card": "Kart nömrəsi",
+    "expiry": "Bitmə tarixi",
+    "previousYear": "Əvvəlki il",
+    "nextYear": "Növbəti il",
+    "pay": "Demo ödəniş et:",
+    "checkout": "Ödənişə keç",
+    "success": "Demo ödəniş uğurla tamamlandı.",
+    "saved": "Sifariş saxlanıldı. Tam kart nömrəsi və CVV saxlanılmır.",
+    "receipt": "Sifariş ID-si",
+    "empty": "Ödəniş üçün səbətdə bilet yoxdur. Yenidən bilet seçin.",
+    "signIn": "Ödəniş üçün hesabınıza daxil olun.",
+    "invalidCard": "Test kartını, kart sahibinin adını, gələcək bitmə tarixini və 3 rəqəmli CVV-ni düzgün daxil edin.",
+    "saveError": "Sifariş saxlanılmadı. Brauzerin yaddaşa girişini yoxlayıb yenidən cəhd edin.",
+    "readError": "Saxlanılmış demo sifarişləri oxumaq mümkün olmadı.",
+    "cartCleanup": "Ödəniş saxlanıldı, amma biletləri səbətdən çıxarmaq mümkün olmadı."
+  },
+  "toast": {
+    "close": "Bildirişi bağla",
+    "loginSuccess": "Hesaba daxil oldunuz.",
+    "registerSuccess": "Hesabınız yaradıldı.",
+    "cartAdded": "Bilet səbətə əlavə edildi.",
+    "cartRemoved": "Bilet səbətdən çıxarıldı.",
+    "favoriteAdded": "Film sevimlilərə əlavə edildi.",
+    "favoriteRemoved": "Film sevimlilərdən çıxarıldı."
+  },
+  "activity": {
+    "title": "İstifadəçi fəaliyyətləri",
+    "description": "Bazaya yazılmış qeydiyyatlar, şərhlər, mesajlar və sifarişlər — ən yenisi əvvəl. Siyahını yeniləmək üçün Yenilə düyməsinə basın.",
+    "search": "Ad, e-poçt, istifadəçi ID-si və ya mətn",
+    "users": "Qeydiyyat",
+    "comments": "Şərh yazıb",
+    "messages": "Mesaj göndərib",
+    "bookings": "Sifariş yaradıb",
+    "empty": "Göstəriləcək fəaliyyət yoxdur.",
+    "unknownUser": "Naməlum istifadəçi",
+    "unknownDate": "Tarix qeyd edilməyib"
+  },
   "account": {
     "title": "Hesabım",
     "description": "Profil məlumatlarınız və kinoteatrla yazışmalarınız.",
@@ -90,7 +133,16 @@
     "email": "E-poçt",
     "password": "Şifrə",
     "button": "Daxil ol",
-    "error": "E-poçt və ya şifrə yanlışdır."
+    "error": "E-poçt və ya şifrə yanlışdır.",
+    "or": "və ya",
+    "google": "Google ilə davam et",
+    "facebook": "Facebook ilə davam et",
+    "socialError": "Sosial hesabla giriş alınmadı. Provayder ayarlarını və bağlantını yoxlayın.",
+    "socialAccountExists": "Bu e-poçt başqa giriş üsulu ilə istifadə olunur. Əvvəl həmin üsulla daxil olun.",
+    "socialProviderDisabled": "Bu giriş üsulu Firebase Authentication bölməsində aktiv deyil.",
+    "socialUnauthorizedDomain": "Saytın domeni Firebase Authentication bölməsində icazəli domenlərə əlavə edilməyib.",
+    "socialPopupBlocked": "Giriş pəncərəsi brauzer tərəfindən bloklandı. Pop-up icazəsini aktiv edin.",
+    "socialNetworkError": "Giriş zamanı bağlantı xətası baş verdi. İnterneti yoxlayın."
   },
   "home": {
     "NowShowing": "İndi Göstərilir",
@@ -141,6 +193,9 @@
     "selected": "Seçilmiş",
     "occupied": "Dolu",
     "screen": "EKRAN",
+    "vipView": "VIP zalının görünüşü",
+    "stageView": "Səhnəyə bax",
+    "viewFromSeat": "Oturacaqdan görünüş",
     "manat": "manat"
   },
   "hero": {
@@ -153,6 +208,11 @@
     "releaseDate": "20 dekabr 2026",
     "bookTickets": "Bilet al",
     "watch": "Treylerə bax"
+  },
+  "movieDetail": {
+    "trailer": "Filmin treyleri",
+    "playTrailer": "Treyleri burada aç",
+    "closeTrailer": "Treyleri bağla"
   },
   "admin": {
     "writeReply": "Cavab yaz",
@@ -202,6 +262,8 @@
     "newMovie": "Yeni film",
     "name": "Ad",
     "poster": "Poster URL",
+    "trailerUrl": "YouTube fragman linki (istəyə bağlı)",
+    "trailerValidation": "Düzgün YouTube fragman linki daxil edin.",
     "rating": "Reytinq",
     "genre": "Janr",
     "duration": "Müddət",
@@ -251,6 +313,9 @@
     "movieValidation": "Məcburi xanaları doldurun. Reytinq 0–10 aralığında olmalıdır.",
     "movieSaved": "Film saxlanıldı.",
     "movieDeleted": "Film silindi.",
+    "deleteCommentTitle": "Şərhi silmək istəyirsiniz?",
+    "deleteCommentText": "Bu şərh həmişəlik silinəcək.",
+    "commentDeleted": "Şərh silindi.",
     "requiredFields": "Bütün xanaları düzgün doldurun.",
     "capacityValidation": "Oturacaq sayı tam ədəd olmalıdır.",
     "sessionValidation": "Mövcud film, zal və düzgün tarix seçin.",
@@ -312,5 +377,47 @@
     "commentsHint": "Saxlanılmış tamaşaçı rəyləri burada göstəriləcək. Film, müəllif və reytinq məlumatlarını nəzərdən keçirin.",
     "profileNote": "Bu səhifə profil məlumatlarını göstərir.",
     "timezone": "Seans vaxtları kinoteatrın yerli vaxtı ilə göstərilir."
+  },
+  "settings": {
+    "emailTitle": "E-poçtu dəyiş",
+    "newEmail": "Yeni e-poçt",
+    "emailNote": "Yeni e-poçtunuza təsdiq linki göndəriləcək. Təsdiqlədikdən sonra yeni e-poçtunuzla yenidən daxil olun.",
+    "sendEmailVerification": "Təsdiq linkini göndər",
+    "emailSending": "Göndərilir…",
+    "emailSent": "Yeni e-poçtunuza təsdiq linki göndərildi. Gələnlər və spam qovluğunu yoxlayın. Linki təsdiqlədikdən sonra yeni e-poçtunuzla yenidən daxil olun.",
+    "emailSame": "Hazırkı e-poçtunuzdan fərqli ünvan daxil edin.",
+    "emailInvalid": "Düzgün e-poçt ünvanı daxil edin.",
+    "emailUsed": "Bu e-poçt artıq istifadə olunur.",
+    "emailPasswordError": "Hazırkı şifrə yanlışdır.",
+    "emailTooManyRequests": "Çox sayda cəhd etdiniz. Bir qədər sonra yenidən yoxlayın.",
+    "emailError": "Təsdiq linki göndərilmədi. Bağlantını yoxlayıb yenidən cəhd edin.",
+    "forgot": "Şifrəni unutmusunuz?",
+    "resetNote": "Email ünvanınızı daxil edin. Şifrəni dəyişmək üçün bərpa linki göndəriləcək.",
+    "sendReset": "Bərpa linkini göndər",
+    "resetSent": "Bu email üçün hesab varsa, bərpa linki göndərildi. Spam qovluğunu da yoxlayın.",
+    "resetError": "Bərpa linki göndərilmədi. Emaili və bağlantını yoxlayıb yenidən cəhd edin.",
+    "usernameTitle": "Username-i dəyiş",
+    "username": "Username",
+    "passwordTitle": "Şifrəni dəyiş",
+    "currentPassword": "Hazırkı şifrə",
+    "newPassword": "Yeni şifrə",
+    "confirmPassword": "Yeni şifrəni təkrar daxil edin",
+    "passwordNote": "Şifrə ən azı 6 simvol olmalıdır.",
+    "save": "Yadda saxla",
+    "saved": "Dəyişiklik yadda saxlanıldı.",
+    "saveError": "Username saxlanılmadı. Yenidən cəhd edin.",
+    "passwordError": "Şifrə dəyişmədi. Hazırkı şifrəni və bağlantını yoxlayın.",
+    "mismatch": "Yeni şifrələr eyni deyil."
+  },
+  "history": {
+    "title": "Tarixçə",
+    "description": "Əvvəllər aldığınız filmlər və biletlər.",
+    "empty": "Hələ alınmış film yoxdur.",
+    "error": "Tarixçə yüklənmədi. Yenidən cəhd edin.",
+    "paid": "Ödənilib",
+    "hall": "Zal",
+    "row": "Sıra",
+    "seat": "Oturacaq",
+    "total": "Məbləğ"
   }
 }

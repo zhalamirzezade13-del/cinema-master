@@ -1,0 +1,10 @@
+:host { position: fixed; top: max(20px, env(safe-area-inset-top)); right: max(20px, env(safe-area-inset-right)); z-index: 10000; width: min(420px, calc(100vw - 32px)); pointer-events: none; }
+.toast-stack { display: grid; gap: 12px; }
+.toast { display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 1px solid #34473d; border-left: 4px solid #63d99a; border-radius: 12px; background: #17221d; color: #f8fafc; box-shadow: 0 8px 30px #0006; pointer-events: auto; }
+.toast.error { border-color: #704047; border-left-color: #ff8b98; background: #2a1c22; }
+.toast.info { border-color: #635032; border-left-color: #ff9d20; background: #272219; }
+.icon { font-weight: 700; color: #63d99a; }
+.error .icon { color: #ff8b98; } .info .icon { color: #ffbd70; }
+.message { flex: 1; min-width: 0; overflow-wrap: anywhere; font-size: 14px; line-height: 1.5; }
+button { display: grid; place-items: center; flex-shrink: 0; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 5px; background: transparent; color: #f8fafc; font-size: 24px; cursor: pointer; }
+button:hover { background: #ffffff15; } button:focus-visible { outline: 2px solid #ff9d20; outline-offset: 2px; }

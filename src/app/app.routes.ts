@@ -10,7 +10,12 @@ import { CartComponent } from './pages/cart/cart.component';
 import { authGuard } from './core/auth.guard';
 
 import { FavoritesComponent } from './pages/favorites/favorites.component';
+import { RegisterComponent } from './pages/register/register.component';
 export const routes: Routes = [{
+  path: 'account',
+  loadComponent: () => import('./pages/account/account.component').then(m => m.AccountComponent),
+  canActivate: [authGuard]
+}, {
   path: '',
   component: HomeComponent
 }, {
@@ -24,7 +29,8 @@ export const routes: Routes = [{
   component: MovieDetailComponent
 }, {
   path: 'payment',
-  component: PaymentComponent
+  component: PaymentComponent,
+  canActivate: [authGuard]
 }, {
   path: 'login',
   component: LoginComponent
@@ -32,17 +38,27 @@ export const routes: Routes = [{
   path: 'cart',
   component: CartComponent,
   canActivate: [authGuard]
-}, {
+},
+{
   path: 'favorites',
   component: FavoritesComponent,
   canActivate: [authGuard]
-}, 
+},
+{
+  path:'register',
+  component:RegisterComponent
+},
 
 {
   path: 'admin',
   loadComponent: () => import('./pages/admin/admin.component').then(m => m.AdminComponent),
   canActivate: [adminGuard],
   children: [
+    {
+      path: 'history',
+      loadComponent: () => import('./pages/admin/history/history.component').then(m => m.HistoryComponent),
+      canActivate: [adminGuard]
+    },
     {
       path: 'movies',
       loadComponent: () => import('./pages/admin/movies/movies.component').then(m => m.MoviesComponent),
@@ -57,7 +73,7 @@ export const routes: Routes = [{
     {
       path: 'comments',
       loadComponent: () => import('./pages/admin/management/management.component').then(m => m.ManagementComponent),
-      data: { section: 'comments', demoMode: true },
+      data: { section: 'comments', demoMode: false },
       canActivate: [adminGuard]
     },
     {
